@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		4E8897821958B170009D26D1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4E8897811958B170009D26D1 /* main.c */; };
 		4E8897841958B170009D26D1 /* Comio2.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E8897831958B170009D26D1 /* Comio2.1 */; };
+		4E8897911958B3CC009D26D1 /* comio2.c in Sources */ = {isa = PBXBuildFile; fileRef = 4E8897901958B3CC009D26D1 /* comio2.c */; };
+		4E8897931958B600009D26D1 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 4E8897921958B600009D26D1 /* debug.c */; };
+		4E8897951958B610009D26D1 /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = 4E8897941958B610009D26D1 /* error.c */; };
+		4E8897971958B63B009D26D1 /* queue.c in Sources */ = {isa = PBXBuildFile; fileRef = 4E8897961958B63B009D26D1 /* queue.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +30,16 @@
 
 /* Begin PBXFileReference section */
 		4E88977E1958B170009D26D1 /* Comio2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Comio2; sourceTree = BUILT_PRODUCTS_DIR; };
-		4E8897811958B170009D26D1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		4E8897831958B170009D26D1 /* Comio2.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Comio2.1; sourceTree = "<group>"; };
+		4E8897811958B170009D26D1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../src/main.c; sourceTree = "<group>"; };
+		4E8897831958B170009D26D1 /* Comio2.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = Comio2.1; path = Comio2/Comio2.1; sourceTree = "<group>"; };
+		4E88978B1958B208009D26D1 /* comio2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = comio2.h; path = ../src/comio2.h; sourceTree = "<group>"; };
+		4E88978D1958B208009D26D1 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debug.h; path = ../src/debug.h; sourceTree = "<group>"; };
+		4E88978E1958B208009D26D1 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = error.h; path = ../src/error.h; sourceTree = "<group>"; };
+		4E88978F1958B208009D26D1 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue.h; path = ../src/queue.h; sourceTree = "<group>"; };
+		4E8897901958B3CC009D26D1 /* comio2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = comio2.c; path = ../src/comio2.c; sourceTree = "<group>"; };
+		4E8897921958B600009D26D1 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debug.c; path = ../src/debug.c; sourceTree = "<group>"; };
+		4E8897941958B610009D26D1 /* error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = error.c; path = ../src/error.c; sourceTree = "<group>"; };
+		4E8897961958B63B009D26D1 /* queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queue.c; path = ../src/queue.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +58,7 @@
 			children = (
 				4E8897801958B170009D26D1 /* Comio2 */,
 				4E88977F1958B170009D26D1 /* Products */,
+				4E8897831958B170009D26D1 /* Comio2.1 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,8 +73,15 @@
 		4E8897801958B170009D26D1 /* Comio2 */ = {
 			isa = PBXGroup;
 			children = (
+				4E8897961958B63B009D26D1 /* queue.c */,
+				4E8897941958B610009D26D1 /* error.c */,
+				4E8897921958B600009D26D1 /* debug.c */,
+				4E88978B1958B208009D26D1 /* comio2.h */,
+				4E88978D1958B208009D26D1 /* debug.h */,
+				4E88978E1958B208009D26D1 /* error.h */,
+				4E88978F1958B208009D26D1 /* queue.h */,
+				4E8897901958B3CC009D26D1 /* comio2.c */,
 				4E8897811958B170009D26D1 /* main.c */,
-				4E8897831958B170009D26D1 /* Comio2.1 */,
 			);
 			path = Comio2;
 			sourceTree = "<group>";
@@ -117,6 +137,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E8897931958B600009D26D1 /* debug.c in Sources */,
+				4E8897911958B3CC009D26D1 /* comio2.c in Sources */,
+				4E8897971958B63B009D26D1 /* queue.c in Sources */,
+				4E8897951958B610009D26D1 /* error.c in Sources */,
 				4E8897821958B170009D26D1 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
