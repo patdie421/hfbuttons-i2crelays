@@ -504,7 +504,7 @@ int16_t _comio2_read_frame(int fd, char *cmd_data, uint16_t *l_cmd_data, int16_t
          ntry++;
          continue; // attention, si aucun caractère lu on boucle
       }
-      VERBOSE(9) fprintf(stderr, "%02x(%c) ",c & 0xFF, c & 0xFF);
+      VERBOSE(9) fprintf(stderr, "%02x ",c & 0xFF);
       ntry=0;
       switch(step)
       {

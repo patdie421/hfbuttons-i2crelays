@@ -124,7 +124,7 @@ int main(int argc, const char * argv[])
    set_verbose_level(9);
    
    ad=comio2_new_ad();
-   ret=comio2_init(ad, serial, B9600);
+   ret=comio2_init(ad, serial, B115200);
    if(ret<0)
    {
       fprintf(stderr, "ERROR - %s ", serial);
