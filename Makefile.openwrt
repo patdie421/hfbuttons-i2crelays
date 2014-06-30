@@ -1,5 +1,7 @@
 SHELL = /bin/bash
-CC = gcc
+
+OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
+CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc 
 
 DEBUGFLAGS  = -D__DEBUG_ON__
 CFLAGS      = -std=c99 \
