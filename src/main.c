@@ -127,8 +127,9 @@ int main(int argc, const char * argv[])
    ret=comio2_init(ad, serial, B9600);
    if(ret<0)
    {
-      fprintf(stderr, "ERROR - %s - ", serial);
-      perror("\n");
+      fprintf(stderr, "ERROR - %s ", serial);
+      perror("");
+      fprintf("\n");
       exit(1);
    }
    comio2_setTrap(ad, 1, test_trap, userdata1);
