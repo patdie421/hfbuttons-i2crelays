@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Patrice Dietsch. All rights reserved.
 //
 
-// Test
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
