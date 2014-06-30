@@ -30,7 +30,7 @@
 
 int16_t test_trap(int16_t num, char *data, int16_t l_data, void *userdata)
 {
-   printf("TRAP #%d : %s\n", num, userdata);
+   printf("TRAP #%d : %s\n", num, (char *)userdata);
    printf("Data : ");
    for(int i=0;i<l_data;i++)
       printf("D[%d]=%02x(%03u) ", i, data[i] & 0xFF, data[i] & 0xFF);
