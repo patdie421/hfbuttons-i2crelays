@@ -112,7 +112,7 @@ void test2(comio2_ad_t *ad)
 }
 
 
-static char *serial = "/dev/tty.usbmodem1411";
+static char *serial = "/dev/ttyATH0";
 
 int main(int argc, const char * argv[])
 {

@@ -1,11 +1,13 @@
 SHELL = /bin/bash
 
+CC = gcc
+
 DEBUGFLAGS  = -D__DEBUG_ON__
 CFLAGS      = -std=c99 \
               -D_BSD_SOURCE \
               -O2 \
               $(DEBUGFLAGS)
-LDFLAGS     = -lpthread 
+LDFLAGS     = -lpthread
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=comio2
@@ -13,7 +15,7 @@ EXECUTABLE=comio2
 all: $(SOURCES) $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 clean:
 	-rm -f $(OBJECTS)

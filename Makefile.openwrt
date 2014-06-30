@@ -4,11 +4,13 @@ OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc
 CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc 
 
 DEBUGFLAGS  = -D__DEBUG_ON__
+
 CFLAGS      = -std=c99 \
               -D_BSD_SOURCE \
               -O2 \
               $(DEBUGFLAGS)
-LDFLAGS     = -lpthread \
+
+LDFLAGS     = -lpthread 
 
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
@@ -17,7 +19,7 @@ EXECUTABLE=comio2
 all: $(SOURCES) $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 clean:
 	-rm -f $(OBJECTS)
