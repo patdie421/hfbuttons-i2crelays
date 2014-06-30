@@ -129,7 +129,7 @@ int main(int argc, const char * argv[])
    {
       fprintf(stderr, "ERROR - %s ", serial);
       perror("");
-      fprintf("\n");
+      fprintf(stderr, "\n");
       exit(1);
    }
    comio2_setTrap(ad, 1, test_trap, userdata1);
