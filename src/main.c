@@ -112,6 +112,8 @@ void test2(comio2_ad_t *ad)
 }
 
 
+static char *serial = "/dev/tty.usbmodem1411";
+
 int main(int argc, const char * argv[])
 {
    comio2_ad_t *ad=NULL;
@@ -122,10 +124,10 @@ int main(int argc, const char * argv[])
    set_verbose_level(9);
    
    ad=comio2_new_ad();
-   ret=comio2_init(ad, "/dev/tty.usbmodem1411", B9600);
+   ret=comio2_init(ad, serial, B9600);
    if(ret<0)
    {
-      printf("ERROR - ");
+      fprintf(stderr, "ERROR - %s - ", serial);
       perror("\n");
       exit(1);
    }
