@@ -24,11 +24,10 @@ clean:
 	-rm -f $(OBJECTS)
 
 openwrtbuild:
-	-git push googlecode master:master
-	-ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt buildfromgit"
+	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt buildfromgit"
 
 openwrtinstall:
-	-ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt install"
+	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt install"
 
 openwrtexec:
-	-ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt exec"
+	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt exec"
