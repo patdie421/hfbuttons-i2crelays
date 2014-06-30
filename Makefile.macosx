@@ -34,4 +34,4 @@ openwrtinstall:
 	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt install"
 
 openwrtexec:
-	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)$(EXECUTABLE)"
+	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)/$(EXECUTABLE)"
