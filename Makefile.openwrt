@@ -3,6 +3,10 @@ YUNADDR = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
 
+# voir :
+# http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
+# pour la mise en place des cles ssh
+
 OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
 CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc 
 
