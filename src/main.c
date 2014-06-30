@@ -28,7 +28,7 @@
 */
 
 
-int16_t test_trap(int16_t num, char *data, int16_t l_data, void *userdata);
+int16_t test_trap(int16_t num, char *data, int16_t l_data, void *userdata)
 {
    printf("TRAP #%d : %s\n", num, userdata);
    printf("Data : ");
@@ -45,6 +45,7 @@ void test1(comio2_ad_t *ad)
    char data[255];
    char resp[255];
    uint16_t l_resp=0;
+   int ret;
    int16_t err;
 
    printf("Test accès mémoire en lecture/écriture\n");
