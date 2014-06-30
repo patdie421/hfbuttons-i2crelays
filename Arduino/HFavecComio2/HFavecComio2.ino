@@ -9,7 +9,7 @@
 #ifdef USBCON
 #define YUNSERIAL1 1
 #endif
-//#define USECOMIO 1
+#define USECOMIO 1
 
 #define TIMEOUT 5000 // 5 secondes pour detecter la connexion Serie USB
 
@@ -140,7 +140,7 @@ void loop()
   myBlinkLeds_500ms.blink(13);
 
 #ifdef USECOMIO
-//  comio.run();
+  comio.run();
 #endif
   buttonsRelays.run();
 }
