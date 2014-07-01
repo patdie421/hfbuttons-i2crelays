@@ -1,5 +1,5 @@
 SHELL = /bin/bash
-YUNADDR = 192.168.0.253
+YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
 
@@ -29,16 +29,16 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 clean:
-	-rm -f $(OBJECTS)
+	rm -f $(OBJECTS)
 
 
 install: $(EXECUTABLE)
-	-scp $(EXECUTABLE) $(YUNUSER)@$(YUNADDR):$(YUNDIR)
+	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
 
 exec:
-	-ssh $(YUNUSER)@$(YUNADDR) $(YUNDIR)/$(EXECUTABLE)
+	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
 getfromgit:
-	-git pull
+	git pull
 
 buildfromgit: clean getfromgit $(EXECUTABLE)
