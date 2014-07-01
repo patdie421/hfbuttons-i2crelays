@@ -29,10 +29,10 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
 openwrt/xPLLib/xPL.a:
-cd openwrt/xPLLib ; make
+	cd openwrt/xPLLib ; make
 
 $(EXECUTABLE): $(OBJECTS) openwrt/xPLLib/xPL.a
-$(CC) $(OBJECTS) openwrt/xPLLib/xPL.a $(LDFLAGS) -o $@
+	$(CC) $(OBJECTS) openwrt/xPLLib/xPL.a $(LDFLAGS) -o $@
 
 clean:
 	rm -f $(OBJECTS)
