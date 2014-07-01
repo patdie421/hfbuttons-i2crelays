@@ -3,7 +3,7 @@
 
 //
 //
-// MÃ©thodes pour le protocole V1
+// Méthodes pour le protocole V1
 //
 //
 #ifdef _COMIO1_COMPATIBLITY_MODE_
@@ -48,10 +48,10 @@ void Comio2::init(unsigned char io_defs[][3])
 
 void Comio2::setFunction(unsigned char num_function, callback_f function)
 /**
- * \brief     Association d'une fonction Ã  un "port" (numÃ©ro de fonction).
+ * \brief     Association d'une fonction à  un "port" (numéro de fonction).
  * \details  
- * \param     num_function  numÃ©ro de fonction
- * \param     function      fonction associÃ©e au numÃ©ro / mettre NULL pour desalouer une fonction
+ * \param     num_function  numéro de fonction
+ * \param     function      fonction associée au numéro / mettre NULL pour desalouer une fonction
  */
 {
   if(num_function<COMIO_MAX_FX)
@@ -77,11 +77,11 @@ void Comio2::sendTrap(unsigned char num_trap)
 
 void Comio2::sendLongTrap(unsigned char num_trap, char *value, char l_value)
 /**
- * \brief     Ã©mission d'une trame TRAP LONG de type "Comio1" dans le buffer de sortie.
+ * \brief     émission d'une trame TRAP LONG de type "Comio1" dans le buffer de sortie.
  * \details   Construit une trame de TRAP LONG et l'envoie dans le buffer de sortie
- * \param     num_trap  numÃ©ro du trap
- * \param     value     donnÃ©es d'accompagnement du trap
- * \param     l_value   nombre de donnÃ©es dans le champ valeur
+ * \param     num_trap  numéro du trap
+ * \param     value     données d'accompagnement du trap
+ * \param     l_value   nombre de données dans le champ valeur
  */
 {
   writeF('#');
@@ -96,11 +96,11 @@ void Comio2::sendLongTrap(unsigned char num_trap, char *value, char l_value)
 
 void Comio2::_comio_send_frame(unsigned char op, unsigned char var, unsigned char type, unsigned int val)
 /**
- * \brief     Ã©mission d'une trame "rÃ©ponse" de type "Comio1" dans le buffer de sortie.
- * \details   Construit une trame de rÃ©ponse et l'envoie dans le buffer de sortie
- * \param     op    operation Ã  rÃ©aliser (sur 4 bits : valeur de 0 Ã  16) / valeurs dÃ©finie : OP_READ, OP_WRITE, OP_FUNCTION
- * \param     var   adresse de la variable (adresse mÃ©moire, PIN, ...) sur 8 bits:
- * \param     type  type de l'opÃ©ration (sur 4 bits : valeur de 0 Ã  16) / valuers dÃ©finie TYPE_DIGITAL, TYPE_ANALOG, TYPE_DIGITAL_PWM, TYPE_MEMORY, TYPE_FUNCTION
+ * \brief     émission d'une trame "réponse" de type "Comio1" dans le buffer de sortie.
+ * \details   Construit une trame de réponse et l'envoie dans le buffer de sortie
+ * \param     op    operation à  réaliser (sur 4 bits : valeur de 0 Ã  16) / valeurs définie : OP_READ, OP_WRITE, OP_FUNCTION
+ * \param     var   adresse de la variable (adresse mémoire, PIN, ...) sur 8 bits:
+ * \param     type  type de l'opération (sur 4 bits : valeur de 0 à 16) / valuers définie TYPE_DIGITAL, TYPE_ANALOG, TYPE_DIGITAL_PWM, TYPE_MEMORY, TYPE_FUNCTION
  * \param     val   valeur numÃ©rique sur 16 bits Ã  retourner (donnÃ©e de l'adresse, valeur de la PIN, ...)
  */
 {
