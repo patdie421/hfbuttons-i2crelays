@@ -25,11 +25,18 @@ INCDIR = /usr/local/include
 # *******************************************************
 
 LDOPTS	= -O
+
+OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
+
 #CC	=	cc $(CCOPTS)
-CC	=	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(CCOPTS)
-LIBCC	=	$(CC) -fPIC
-#LD	= 	cc $(LDOPTS)
-LD      =       $(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
+#CC	=	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(CCOPTS)
+CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc $(CCOPTS)
+
+LIBCC  =﻿ $(CC) -fPIC
+
+#LD	= cc $(LDOPTS)
+#LD  = $(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
+LD = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
 
 INCLUDES = xPL.h xPL_priv.h
 LIB_OBJS = xPL-io.o xPL-utils.o xPL-service.o xPL-message.o xPL-listeners.o xPL-store.o xPL-config.o xPL-hub.o
@@ -47,7 +54,7 @@ xPLLib: $(LIB_OBJS) libxPL.so xPL.a
 libxPL.so: $(LIB_OBJS)
 	@echo "Creating libxPL.so..."
 #	@ld -shared -o libxPL.so $(LIB_OBJS)
-	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-ld -shared -o libxPL.so $(LIB_OBJS)
+	$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-ld -shared -o libxPL.so $(LIB_OBJS)
 
 xPL.a: $(LIB_OBJS)
 	@echo "Creating xPL.a..."
