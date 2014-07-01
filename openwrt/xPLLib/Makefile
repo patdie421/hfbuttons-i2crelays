@@ -26,17 +26,17 @@ INCDIR = /usr/local/include
 
 LDOPTS	= -O
 
-OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
+OPENWRTSDKTOOLCHAIN_DIR=$(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
 
 #CC	=	cc $(CCOPTS)
 #CC	=	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(CCOPTS)
-CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc $(CCOPTS)
+CC=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc $(CCOPTS)
 
-LIBCC  =﻿ $(CC) -fPIC
+LIBCC=$(CC) -fPIC
 
 #LD	= cc $(LDOPTS)
 #LD  = $(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
-LD = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
+LD=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
 
 INCLUDES = xPL.h xPL_priv.h
 LIB_OBJS = xPL-io.o xPL-utils.o xPL-service.o xPL-message.o xPL-listeners.o xPL-store.o xPL-config.o xPL-hub.o
@@ -67,19 +67,19 @@ xPL-utils.o: $(INCLUDES) xPL-utils.c
 xPL-config.o: $(INCLUDES) xPL-config.c
 	$(LIBCC) -c xPL-config.c
 
-xPL-io.o:	$(INCLUDES) xPL-io.c
+xPL-io.o: $(INCLUDES) xPL-io.c
 	$(LIBCC) -c xPL-io.c
 
-xPL-service.o:	$(INCLUDES) xPL-service.c
+xPL-service.o: $(INCLUDES) xPL-service.c
 	$(LIBCC) -c xPL-service.c
 
-xPL-message.o:	$(INCLUDES) xPL-message.c
+xPL-message.o: $(INCLUDES) xPL-message.c
 	$(LIBCC) -c xPL-message.c
 
-xPL-listeners.o:	$(INCLUDES) xPL-listeners.c
+xPL-listeners.o: $(INCLUDES) xPL-listeners.c
 	$(LIBCC) -c xPL-listeners.c
 
-xPL-store.o:	$(INCLUDES) xPL-store.c
+xPL-store.o: $(INCLUDES) xPL-store.c
 	$(LIBCC) -c xPL-store.c
 
 xPL-hub.o:	$(INCLUDES) xPL-hub.c
