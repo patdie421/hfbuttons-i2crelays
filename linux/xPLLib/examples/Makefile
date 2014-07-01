@@ -4,7 +4,7 @@
 
 #
 # For LINUX, use the following
-CCOPTS = -g -DLINUX -pedantic -Wall -mmacosx-version-min=10.7
+CCOPTS = -g -DLINUX -pedantic -Wall
 LIBS = -g -lm 
 
 # For UnixWare systems, use the following
@@ -22,8 +22,9 @@ LIBS = -g -lm
 # *******************************************************
 
 LDOPTS	= -O
-CC	=	gcc $(CCOPTS) -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/ -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/
-LD	= 	$(CC) $(LDOPTS)
+CC	=	cc $(CCOPTS)
+LD	= 	cc $(LDOPTS)
+
 
 CMD_LIST = xPL_Hub xPL_Logger xPL_Clock xPL_ConfigClock xPLSend
 
@@ -52,8 +53,3 @@ hubdist: rebuild
 	tar czf ../../web/xPLHub.tgz xPL_Hub xPL_Hub_static xPLHub_INSTALL.txt
 
 rebuild: clean all
-
-
-
-
-

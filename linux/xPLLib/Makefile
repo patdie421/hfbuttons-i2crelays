@@ -4,10 +4,11 @@
 
 #
 # For LINUX, use the following
-CCOPTS = -O2 -D__DARWIN_UNIX03 -pedantic -Wall -g
+CCOPTS = -O2 -DLINUX -pedantic -Wall -g
 LIBS = -lm
 LIBDIR = /usr/local/lib
 INCDIR = /usr/local/include
+
 
 # For UnixWare systems, use the following
 # CCOPTS = -O2 -DUNIXWARE
@@ -19,32 +20,31 @@ INCDIR = /usr/local/include
 # CCOPTS = -O2 -DTRU64
 # LIBS = -lm
 
-CCOPTS = -std=c99
-
 # *******************************************************
 # ******* No more customizations from here down *********
 # *******************************************************
 
 LDOPTS	= -O
-CC	=	gcc $(CCOPTS)
-LIBCC	=	$(CC) -fPIC -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/ -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/
-LD	= 	gcc $(LDOPTS)
+CC	=	cc $(CCOPTS)
+LIBCC	=	$(CC) -fPIC
+LD	= 	cc $(LDOPTS)
 
 INCLUDES = xPL.h xPL_priv.h
 LIB_OBJS = xPL-io.o xPL-utils.o xPL-service.o xPL-message.o xPL-listeners.o xPL-store.o xPL-config.o xPL-hub.o
 
 all:	xPLLib examples
 
-install: libxPL.dylib xPL.a xPL.h
-	cp -f libxPL.dylib $(LIBDIR)
+install: libxPL.so xPL.a xPL.h
+	cp -f libxPL.so $(LIBDIR)
 	cp -f xPL.a $(LIBDIR)
 	cp -f xPL.h $(INCDIR)
+	ldconfig
 
-xPLLib: $(LIB_OBJS) libxPL.dylib xPL.a
+xPLLib: $(LIB_OBJS) libxPL.so xPL.a
 
-libxPL.dylib: $(LIB_OBJS)
-	@echo "Creating libxPL.dylib..."
-	libtool -dynamic -flat_namespace -lSystem -install_name /usr/local/lib/libxPL.dylib -o libxPL.dylib $(LIB_OBJS) -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/
+libxPL.so: $(LIB_OBJS)
+	@echo "Creating libxPL.so..."
+	@ld -shared -o libxPL.so $(LIB_OBJS)
 
 xPL.a: $(LIB_OBJS)
 	@echo "Creating xPL.a..."
@@ -77,7 +77,7 @@ xPL-hub.o:	$(INCLUDES) xPL-hub.c
 
 
 clean:
-	-rm -f *.o *.a *.dylib core
+	-rm -f *.o *.a *.so core
 dist:
 	rm -rf /tmp/xPLLib
 	mkdir /tmp/xPLLib

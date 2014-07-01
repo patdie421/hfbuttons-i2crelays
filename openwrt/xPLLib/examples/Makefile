@@ -4,7 +4,7 @@
 
 #
 # For LINUX, use the following
-CCOPTS = -g -DLINUX -pedantic -Wall -mmacosx-version-min=10.7
+CCOPTS = -g -DLINUX -pedantic -Wall
 LIBS = -g -lm 
 
 # For UnixWare systems, use the following
@@ -22,8 +22,11 @@ LIBS = -g -lm
 # *******************************************************
 
 LDOPTS	= -O
-CC	=	gcc $(CCOPTS) -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/ -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/
-LD	= 	$(CC) $(LDOPTS)
+#CC	=	cc $(CCOPTS)
+CC	=	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(CCOPTS)
+#LD	= 	cc $(LDOPTS)
+LD	= 	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
+
 
 CMD_LIST = xPL_Hub xPL_Logger xPL_Clock xPL_ConfigClock xPLSend
 
