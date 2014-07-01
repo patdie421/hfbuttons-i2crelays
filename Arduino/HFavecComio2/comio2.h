@@ -8,27 +8,27 @@
 //#define _COMIO1_COMPATIBLITY_MODE_
 
 #ifdef _COMIO1_COMPATIBLITY_MODE_
-// Taille des mémoires en fonction du type d'arduino (type de microcontroleur)
+// Taille des mÃ©moires en fonction du type d'arduino (type de microcontroleur)
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284P__)
 // un MEGA
 #define COMIO_MAX_D            54 // nombre max d' E/S logiques
-#define COMIO_MAX_A            16 // nombre max d' Entrées analogiques
-#define COMIO_MAX_M            64 // nombre d'octet réservé pour le partage avec le PC
+#define COMIO_MAX_A            16 // nombre max d' EntrÃ©es analogiques
+#define COMIO_MAX_M            64 // nombre d'octet rÃ©servÃ© pour le partage avec le PC
 #elif defined(__AVR_ATmega32u4__)
-// un Leonardo ou équivalant ?
+// un Leonardo ou Ã©quivalant ?
 #define COMIO_MAX_D            20
 #define COMIO_MAX_A             6
 #define COMIO_MAX_M            32
 #else
-// un UNO ou équivalant (tous les autres en fait ...)
+// un UNO ou Ã©quivalant (tous les autres en fait ...)
 #define COMIO_MAX_D            14
 #define COMIO_MAX_A             6
 #define COMIO_MAX_M            32
 #endif
 
-#define COMIO_MAX_FX            8 // nombre maximum de fonctions déclarables
+#define COMIO_MAX_FX            8 // nombre maximum de fonctions dÃ©clarables
 
-// code opération
+// code opÃ©ration
 #define OP_READ                 0
 #define OP_WRITE                1
 #define OP_FUNCTION             2
@@ -53,15 +53,16 @@
 #endif
 
 // COMIO2 : version 2 du protocole
-#define COMIO2_MAX_FX           8 // nombre maximum de fonctions déclarables
+#define COMIO2_MAX_FX           8 // nombre maximum de fonctions dÃ©clarables
 #define COMIO2_MAX_MEMORY      32
-#define COMIO2_MAX_DATA        40 // taille maximum d'une trame de données interractive
+#define COMIO2_MAX_DATA        40 // taille maximum d'une trame de donnÃ©es interractive
 
 #define COMIO2_CMD_ERROR        0
 #define COMIO2_CMD_READMEMORY   1
 #define COMIO2_CMD_WRITEMEMORY  2
 #define COMIO2_CMD_CALLFUNCTION 3
-#define COMIO2_CMD_TRAP         4
+
+#define COMIO2_TRAP_ID        254
 
 #define COMIO2_ERR_NOERR        0
 #define COMIO2_ERR_PARAMS       1
@@ -73,7 +74,7 @@
 #endif
 
 //
-// Définition des objets de type comio2
+// DÃ©finition des objets de type comio2
 //
 #ifdef _COMIO1_COMPATIBLITY_MODE_
 typedef int (*callback_f)(int);
@@ -85,51 +86,59 @@ class Comio2
 public:
   Comio2();
 
-  int run();
 #ifdef _COMIO1_COMPATIBLITY_MODE_
   void init(unsigned char io_defs[][3]);
 #endif
   void init();
-  
-  void setFunction(unsigned char num_function, callback2_f function);
-  int setMemory(unsigned int addr, unsigned char value);
-  int getMemory(unsigned int addr);
-  
+  int run();
+
 #ifdef _COMIO1_COMPATIBLITY_MODE_
   void setFunction(unsigned char num_function, callback_f function);
   void sendTrap(unsigned char num_trap);
   void sendLongTrap(unsigned char num_trap, char *value, char l_value);
 #endif
-  void setReadF(int (*f)(void)) { readF=f; };
-  void setWriteF(int (*f)(char)) { writeF=f; };
-  void setAvailableF(int (*f)(void)) { availableF=f; };
-  void setFlushF(int (*f)(void)) { flushF=f; };
-  
-  void setUserdata(void *ud) { userdata = ud; };
+  void setFunction(unsigned char num_function, callback2_f function);
+  int  setMemory(unsigned int addr, unsigned char value);
+  int  getMemory(unsigned int addr);
+  void setReadF(int (*f)(void)) { 
+    readF=f; 
+  };
+  void setWriteF(int (*f)(char)) { 
+    writeF=f; 
+  };
+  void setAvailableF(int (*f)(void)) { 
+    availableF=f; 
+  };
+  void setFlushF(int (*f)(void)) { 
+    flushF=f; 
+  };
+  void setUserdata(void *ud) { 
+    userdata = ud; 
+  };
+  void sendTrap(unsigned char num_trap, char *data, char l_data);
+
 private:
   // IO
 #ifdef _COMIO1_COMPATIBLITY_MODE_
   unsigned char comio_digitals[COMIO_MAX_D];
   unsigned char comio_analogs[COMIO_MAX_A];
 #endif
-  // memoire "partagée"
+  // memoire "partagÃ©e"
   unsigned char comio_memory[COMIO_MAX_M];
 
-  // point d'entrées des fonctions
-#ifdef _COMIO1_COMPATIBLITY_MODE_ 
+#ifdef _COMIO1_COMPATIBLITY_MODE_
   callback_f comio_functions[COMIO_MAX_FX];
 #endif
   callback2_f comio_functionsV2[COMIO2_MAX_FX];
-  
+
   int (* readF)(void);
   int (* writeF)(char car);
   int (* availableF)(void);
   int (* flushF)(void);
-  
   void *userdata;
 
-  void _comio_debut_trame(unsigned char id, unsigned char cmd, int l_data, int *ccheksum);
-  void _comio_fin_trame(int *cchecksum);
+  void _comio_debut_trameV2(unsigned char id, unsigned char cmd, int l_data, int *ccheksum);
+  void _comio_fin_trameV2(int *cchecksum);
   void _comio_send_errorV2(unsigned char id, unsigned char error);
   int _comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *data, int *l_data);
   int _comio_do_operationV2(unsigned char id,unsigned char cmd, char *data, int l_data);
@@ -144,4 +153,5 @@ private:
 };
 
 #endif
+
 
