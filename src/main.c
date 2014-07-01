@@ -18,6 +18,7 @@
 #include "comio2.h"
 
 /*
+  Format d'une trame "question" COMIO2
   Start(1)[{] : octet de début de trame. Permet d'identifier le type de trame
   Longueur(1) : longueur de la réponse (start et end compris)
   Id_trame(1) : réponse à la question id_trame
