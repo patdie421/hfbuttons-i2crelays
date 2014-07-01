@@ -13,7 +13,7 @@ void Comio2::init(unsigned char io_defs[][3])
   if(!io_defs)
     return;
 
-  // initialisation des entrÃ©es/sorties
+  // initialisation des entrées/sorties
   for(int i=0;io_defs[i][0]!=255;i++)
   {
     switch(io_defs[i][2])
@@ -61,11 +61,11 @@ void Comio2::setFunction(unsigned char num_function, callback_f function)
 
 void Comio2::sendTrap(unsigned char num_trap)
 /**
- * \brief     Ã©mission d'une trame TRAP de type "Comio1" dans le buffer de sortie.
- * \details   Ã©mission d'une trame TRAP de type "Comio1" dans le buffer de sortie.
- * \param     num_trap  numÃ©ro du trap
- * \param     value     donnÃ©es d'accompagnement du trap
- * \param     l_value   nombre de donnÃ©es dans le champ valeur
+ * \brief     émission d'une trame TRAP de type "Comio1" dans le buffer de sortie.
+ * \details   émission d'une trame TRAP de type "Comio1" dans le buffer de sortie.
+ * \param     num_trap  numéro du trap
+ * \param     value     données d'accompagnement du trap
+ * \param     l_value   nombre de données dans le champ valeur
  */
 {
   writeF('*');
@@ -124,9 +124,9 @@ void Comio2::_comio_send_frame(unsigned char op, unsigned char var, unsigned cha
 
 void Comio2::_comio_send_error_frame(unsigned char nerr)
 /**
- * \brief     Ã©mission d'une trame "erreur" de type "Comio1" dans le buffer de sortie.
+ * \brief     émission d'une trame "erreur" de type "Comio1" dans le buffer de sortie.
  * \details   Construit une trame d'erreur et l'envoie dans le buffer de sortie
- * \param     nerr   numÃ©ro d'erreur Ã  retourner sur 8 bits.
+ * \param     nerr   numéro d'erreur Ã  retourner sur 8 bits.
  */
 {
   writeF('!');
@@ -138,12 +138,12 @@ void Comio2::_comio_send_error_frame(unsigned char nerr)
 int Comio2::_comio_read_frame(unsigned char *op, unsigned char *var, unsigned char *type, unsigned int *val)
 /**
  * \brief     lecture d'une trame "commande" de type "Comio1" dans le buffer d'entrÃ©e.
- * \details   Lit un flot d'entrÃ©e, l'analyse et le dÃ©coupe si la trame est correctement formatÃ©e
- * \param     op    operation Ã  rÃ©aliser (sur 4 bits : valeur de 0 Ã  16)
- * \param     var   adresse de la variable (adresse mÃ©moire, PIN, ...) sur 8 bits:
- * \param     type  type de l'opÃ©ration (sur 4 bits : valeur de 0 Ã  16)
- * \param     val   valeur numÃ©rique sur 16 bits Ã  traiter (donnÃ©e de l'adresse, valeur de la PIN, ...)
- * \return    0 = pas de trame correcte, 1 = ok donnÃ©es disponibles
+ * \details   Lit un flot d'entrée, l'analyse et le découpe si la trame est correctement formatée
+ * \param     op    operation à réaliser (sur 4 bits : valeur de 0 à 16)
+ * \param     var   adresse de la variable (adresse mémoire, PIN, ...) sur 8 bits:
+ * \param     type  type de l'opération (sur 4 bits : valeur de 0 à 16)
+ * \param     val   valeur numérique sur 16 bits à traiter (donnée de l'adresse, valeur de la PIN, ...)
+ * \return    0 = pas de trame correcte, 1 = ok données disponibles
  */
 {
   int c;
@@ -151,7 +151,7 @@ int Comio2::_comio_read_frame(unsigned char *op, unsigned char *var, unsigned ch
 
   while(stat<5)
   {
-    // 5 essais pour obtenir des donnÃ©es
+    // 5 essais pour obtenir des données
     for(int i=0;i<5;i++)
     {
       c=readF();
@@ -161,15 +161,15 @@ int Comio2::_comio_read_frame(unsigned char *op, unsigned char *var, unsigned ch
     }
 
     if(c<0)
-      return 0; // pas de donnÃ©es => sortie direct "sans rien dire"
+      return 0; // pas de données => sortie direct "sans rien dire"
 
-    // automate Ã  Ã©tats pour traiter les diffÃ©rents champs de la trame
+    // automate à états pour traiter les différents champs de la trame
     switch(stat)
     {
-    case 0: // lecture de l'opÃ©ration et du type
+    case 0: // lecture de l'opération et du type
       *op=(((unsigned char)c) & 0xF0) >> 4;
       *type=(((unsigned char)c) & 0x0F);
-      stat++; // Ã©tape suivante Ã  la prochaine itÃ©ration
+      stat++; // étape suivante à la prochaine itération
       break;
     case 1: // lecturde de l'adresse de la variable
       *var=(unsigned char)c;
@@ -196,12 +196,12 @@ int Comio2::_comio_read_frame(unsigned char *op, unsigned char *var, unsigned ch
 
 int Comio2::_comio_valid_operation(unsigned char op, unsigned char var, unsigned char type, unsigned int val)
 /**
- * \brief     contrÃ´le de la validitÃ© des donnÃ©es d'une demande.
- * \details   VÃ©rifie que les donnÃ©es sont cohÃ©rentes en fonction des plages et des dÃ©clarations effectuÃ©es
- * \param     op    operation Ã  rÃ©aliser (sur 4 bits : valeur de 0 Ã  16)
- * \param     var   adresse de la variable (adresse mÃ©moire, PIN, ...) sur 8 bits:
- * \param     type  type de l'opÃ©ration (sur 4 bits : valeur de 0 Ã  16)
- * \param     val   valeur numÃ©rique sur 16 bits Ã  traiter (donnÃ©e de l'adresse, valeur de la PIN, ...)
+ * \brief     contrôle de la validité des données d'une demande.
+ * \details   Vérifie que les données sont cohérentes en fonction des plages et des déclarations effectuées
+ * \param     op    operation à réaliser (sur 4 bits : valeur de 0 à 16)
+ * \param     var   adresse de la variable (adresse mémoire, PIN, ...) sur 8 bits:
+ * \param     type  type de l'opération (sur 4 bits : valeur de 0 à 16)
+ * \param     val   valeur numérique sur 16 bits à traiter (donnée de l'adresse, valeur de la PIN, ...)
  * \return    0 = ok, autre valeur = code d'erreur
  */
 {
@@ -236,12 +236,12 @@ int Comio2::_comio_valid_operation(unsigned char op, unsigned char var, unsigned
 
 boolean Comio2::_comio_do_operation(unsigned char op, unsigned char var, unsigned char type, unsigned int val)
 /**
- * \brief     rÃ©alise l'opÃ©ration demandÃ© par une commande de type "Comio1".
- * \details   AprÃ¨s une validation, les opÃ©rations peuvent Ãªtre rÃ©alsÃ©es et renvoie une rÃ©ponse.
- * \param     op    operation Ã  rÃ©aliser (sur 4 bits : valeur de 0 Ã  16)
- * \param     var   adresse de la variable (adresse mÃ©moire, PIN, ...) sur 8 bits:
- * \param     type  type de l'opÃ©ration (sur 4 bits : valeur de 0 Ã  16)
- * \param     val   valeur numÃ©rique sur 16 bits Ã  traiter (donnÃ©e de l'adresse, valeur de la PIN, ...)
+ * \brief     réalise l'opération demandée par une commande de type "Comio1".
+ * \details   Après une validation, les opérations peuvent être réalsées et renvoie une réponse.
+ * \param     op    operation à réaliser (sur 4 bits : valeur de 0 à 16)
+ * \param     var   adresse de la variable (adresse mémoire, PIN, ...) sur 8 bits:
+ * \param     type  type de l'opération (sur 4 bits : valeur de 0 à 16)
+ * \param     val   valeur numérique sur 16 bits à traiter (donnée de l'adresse, valeur de la PIN, ...)
  * \return    true = ok, false = ko
  */
 {
@@ -304,16 +304,16 @@ boolean Comio2::_comio_do_operation(unsigned char op, unsigned char var, unsigne
 
 //
 //
-// Nouvelles mÃ©thodes pour le protocole V2
+// Nouvelles méthodes pour le protocole V2
 //
 //
 
 void Comio2::_comio_send_errorV2(unsigned char id, unsigned char error)
 /**
- * \brief     envoie une rÃ©ponse signalant une erreur.
+ * \brief     envoie une réponse signalant une erreur.
  * \details  
- * \param     id    identifiant de la demande qui a provoquÃ© une erreur
- * \param     error numÃ©ro de l'erreur
+ * \param     id    identifiant de la demande qui a provoqué une erreur
+ * \param     error numéro de l'erreur
  */
 {
   int cchecksum=0;
@@ -327,22 +327,22 @@ void Comio2::_comio_send_errorV2(unsigned char id, unsigned char error)
 
 int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *data, int *l_data)
 /**
- * \brief     lecture d'une trame "commande" de type "Comio2" dans le buffer d'entrÃ©e.
- * \details   Lit un flot d'entrÃ©e, l'analyse et le dÃ©coupe si la trame est correctement formatÃ©e
+ * \brief     lecture d'une trame "commande" de type "Comio2" dans le buffer d'entrée.
+ * \details   Lit un flot d'entrée, l'analyse et le découpe si la trame est correctement formatée
  * \param     cmd    code commande
- * \param     data   donnÃ©es de la commande
- * \param     l_data nombre de caractÃ¨re de la zone data (max 80 octets)
+ * \param     data   données de la commande
+ * \param     l_data nombre de caractères de la zone data (max 80 octets)
  * \return    0 => trame correcte,  < 0 => erreur
  */
 {
   /*
    Structure d'une trame "question" de type "Comio2"
    
-   Start(1)[[] : octet de dÃ©but de trame. Permet d'identifier le type de trame
+   Start(1)[[] : octet de début de trame. Permet d'identifier le type de trame
    Longueur(1) : nombre d'octet de la trame (inclus start et fin de trame)
-   Id_trame(1) : numÃ©ro de trame question (0 = pas de rÃ©ponse attendu, sauf erreur)
-   Commande(1) : opÃ©ration Ã  rÃ©aliser
-   Data(x)     : donnÃ©es de l'opÃ©ration (0<=x<80)
+   Id_trame(1) : numéro de trame question (0 = pas de réponse attendu, sauf erreur)
+   Commande(1) : opération à réaliser
+   Data(x)     : données de l'opération (0<=x<80)
    CheckSum(1) : checksum calculer sur la trame hors start et end (0xFF - (somme_de_tous_les_octets & 0xFF)).
    End(1)[]]   : octet de fin de trame.
    */
@@ -353,7 +353,7 @@ int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *dat
 
   while(stat<6)
   {
-    // 5 ms max pour obtenir une donnÃ©es
+    // 5 ms max pour obtenir une données
     for(int i=0;i<5;i++)
     {
       c=readF();
@@ -363,15 +363,15 @@ int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *dat
     }
 
     if(c<0)
-      return 0; // pas de donnÃ©es => sortie direct "sans rien dire"
+      return 0; // pas de données => sortie direct "sans rien dire"
 
-    // automate Ã  Ã©tats pour traiter les diffÃ©rents champs de la trame
+    // automate à états pour traiter les différents champs de la trame
     switch(stat)
     {
     case 0: // lecture de la longueur de trame
       *l_data=c-5;
       cchecksum+=c;
-      stat++; // Ã©tape suivante Ã  la prochaine itÃ©ration
+      stat++; // étape suivante à la prochaine itération
       break;
 
     case 1: // lecturde de l'id de trame
@@ -387,7 +387,7 @@ int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *dat
       stat++;
       break;
 
-    case 3: // lecture des donnÃ©es
+    case 3: // lecture des données
       if(j<COMIO2_MAX_DATA)
       {
         data[j]=c;
@@ -420,10 +420,10 @@ int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *dat
 
 void Comio2::_comio_debut_trameV2(unsigned char id, unsigned char cmd, int l_data, int *cchecksum)
 /**
- * \brief     Construit et envoie les octets de dÃ©but d'une trame (checksum + '}') et met Ã  jour le cchecksum Ã  partir des Ã©lÃ©ments en paramÃ¨tre.
+ * \brief     Construit et envoie les octets de début d'une trame (checksum + '}') et met à jour le cchecksum à partir des éléments en paramètre.
  * \param  id      id de la trame
  * \param  cmd     commande (type de trame)
- * \param  l_data  nombre d'octet de la partie donnÃ©es de la trame
+ * \param  l_data  nombre d'octet de la partie données de la trame
  */
 {
   writeF('{');
@@ -442,7 +442,7 @@ void Comio2::_comio_debut_trameV2(unsigned char id, unsigned char cmd, int l_dat
 void Comio2::_comio_fin_trameV2(int *cchecksum)
 /**
  * \brief     Construit et envoie les octets de cloture d'une trame (checksum + '}').
- * \param     cchecksum  Ã©tat du checksum jusqu'Ã  prÃ©sent
+ * \param     cchecksum  état du checksum jusqu'à présent
  */
 {
   *cchecksum=0xFF - (*cchecksum & 0xFF);
@@ -459,25 +459,25 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
  * \details   Traite une commande (cmd)
  * \param     cmd    code commande
  * \param     data   donnÃ©es de la commande
- * \param     l_data nombre de caractÃ¨re de la zone data (max 80 octets)
+ * \param     l_data nombre de caractères de la zone data (max 80 octets)
  * \return    0 => trame correcte,  < 0 => erreur
  */
 {
   /*                                       
-   Start(1)[{] : octet de dÃ©but de trame. Permet d'identifier le type de trame
-   Longueur(1) : longueur de la rÃ©ponse (start et end compris)
-   Id_trame(1) : rÃ©ponse Ã  la question id_trame
-   Response(1) : type de la rÃ©ponse
-   Data(x)     : donnÃ©es de la rÃ©ponse
-   CheckSum(1) : checksum calculÃ© sur la trame hors start et end.
+   Start(1)[{] : octet de début de trame. Permet d'identifier le type de trame
+   Longueur(1) : longueur de la réponse (start et end compris)
+   Id_trame(1) : réponse à la question id_trame
+   Response(1) : type de la réponse
+   Data(x)     : données de la réponse
+   CheckSum(1) : checksum calculé sur la trame hors start et end.
    End(1)[}]   : octet de fin de trame.
    */
   int cchecksum = 0;
-  int j=0; // compteur du nombre d'octet Ã©crit
+  int j=0; // compteur du nombre d'octet écrit
 
   switch(cmd)
   {
-  case COMIO2_CMD_READMEMORY: // memory read - data contient la liste des cases mÃ©moires Ã  lire
+  case COMIO2_CMD_READMEMORY: // memory read - data contient la liste des cases mémoires à lire
     if(!id)
       return 0;
 
@@ -556,11 +556,11 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
 
 void Comio2::sendTrap(unsigned char num_trap, char *data, char l_data)
 /**
- * \brief     Ã©mission d'une trame TRAP de type "Comio2" dans le buffer de sortie.
+ * \brief     émission d'une trame TRAP de type "Comio2" dans le buffer de sortie.
  * \details   Construit une trame de TRAP et l'envoie dans le buffer de sortie
- * \param     num_trap  numÃ©ro du trap
- * \param     value     donnÃ©es d'accompagnement du trap
- * \param     l_value   nombre de donnÃ©es dans le champ valeur
+ * \param     num_trap  numéro du trap
+ * \param     value     données d'accompagnement du trap
+ * \param     l_value   nombre de données dans le champ valeur
  */
 {
   int cchecksum=0;
@@ -577,8 +577,8 @@ void Comio2::sendTrap(unsigned char num_trap, char *data, char l_data)
 
 int Comio2::setMemory(unsigned int addr, unsigned char value)
 /**
- * \brief     Ecriture d'une case mÃ©moire.
- * \param     addr  adresse de la case Ã  mettre Ã  jour
+ * \brief     Ecriture d'une case mémoire.
+ * \param     addr  adresse de la case à mettre à jour
  * \return    0 si OK ou -1 si addr hors scope
  */
 {
@@ -608,10 +608,10 @@ int Comio2::getMemory(unsigned int addr)
 
 void Comio2::setFunction(unsigned char num_function, callback2_f function)
 /**
- * \brief     Association d'une fonction Ã  un "port" (numÃ©ro de fonction).
+ * \brief     Association d'une fonction à un "port" (numéro de fonction).
  * \details  
- * \param     num_function  numÃ©ro de fonction
- * \param     function      fonction associÃ©e au numÃ©ro / mettre NULL pour desalouer une fonction
+ * \param     num_function  numéro de fonction
+ * \param     function      fonction associée au numéro / mettre NULL pour desalouer une fonction
  */
 {
   if(num_function<COMIO2_MAX_FX)
@@ -626,7 +626,7 @@ void Comio2::setFunction(unsigned char num_function, callback2_f function)
 //
 void Comio2::init(void)
 /**
- * \brief     Initialisation de COMIO1 sans paramÃ¨tre.
+ * \brief     Initialisation de COMIO1 sans paramètre.
  */
 {
 #ifdef _COMIO1_COMPATIBLITY_MODE_
@@ -637,9 +637,9 @@ void Comio2::init(void)
 
 inline int _comio2_serial_read()
 /**
- * \brief     fonction de lecture d'un caractÃ¨re utilisÃ©e par dÃ©faut.
- * \details   Point de lecture pour la rÃ©ception des commandes/donnÃ©es Ã  traiter par Comio si aucune autre fonction n'a Ã©tÃ© positionnÃ©e par la methode setReadFunction. Lit le premier caractÃ¨re du buffer d'entrÃ©e
- * \return    < 0 (-1) si pas de donnÃ©es disponible, le caractÃ¨re lu sinon.
+ * \brief     fonction de lecture d'un caractère utilisée par défaut.
+ * \details   Point de lecture pour la réception des commandes/données à traiter par Comio si aucune autre fonction n'a été positionnée par la methode setReadFunction. Lit le premier caractère du buffer d'entrée
+ * \return    < 0 (-1) si pas de données disponible, le caractère lu sinon.
  */
 {
   return Serial.read();
@@ -648,9 +648,9 @@ inline int _comio2_serial_read()
 
 inline int _comio2_serial_write(char car)
 /**
- * \brief     fonction d'Ã©criture par dÃ©faut.
- * \param     car   caractÃ¨re a insÃ©rer dans le buffer de sorie
- * \details   Point d'Ã©criture des rÃ©sultats renvoyÃ©s par Comio si aucune autre fonction n'a Ã©tÃ© positionnÃ©e par la methode setWriteFunction. Ajoute un caractere dans le buffer de sortie
+ * \brief     fonction d'écriture par défaut.
+ * \param     car   caractère a insérer dans le buffer de sorie
+ * \details   Point d'écriture des résultats renvoyés par Comio si aucune autre fonction n'a été positionnée par la methode setWriteFunction. Ajoute un caractere dans le buffer de sortie
  * \return    toujours 0
  */
 {
@@ -661,9 +661,9 @@ inline int _comio2_serial_write(char car)
 
 inline int _comio2_serial_available()
 /**
- * \brief     fonction permettant de connaitre le nombre de caractÃ¨res prÃ©sent dans le buffer d'entrÃ©e.
- * \details   fonction par defaut si aucune autre fonction n'a Ã©tÃ© positionnÃ©e par la methode setAvailableFunction.
- * \return    nombre de caractÃ¨res disponibles
+ * \brief     fonction permettant de connaitre le nombre de caractères présent dans le buffer d'entrée.
+ * \details   fonction par defaut si aucune autre fonction n'a été positionnée par la methode setAvailableFunction.
+ * \return    nombre de caractères disponibles
  */
 {
   return Serial.available();
@@ -673,7 +673,7 @@ inline int _comio2_serial_available()
 inline int _comio2_serial_flush()
 /**
  * \brief     fonction permettant d'attendre le "vidage" du buffer de sortie.
- * \details   fonction par defaut si aucune autre fonction n'a Ã©tÃ© positionnÃ©e par la methode setFlushFunction.
+ * \details   fonction par defaut si aucune autre fonction n'a été positionnée par la methode setFlushFunction.
  * \return    toujours 0
  */
 {
@@ -685,7 +685,7 @@ inline int _comio2_serial_flush()
 Comio2::Comio2()
 /**
  * \brief     constructeur classe Comio2.
- * \details   initialise les donnÃ©es des instances Comio2.
+ * \details   initialise les données des instances Comio2.
  */
 {
 #ifdef _COMIO1_COMPATIBLITY_MODE_
@@ -702,8 +702,6 @@ Comio2::Comio2()
   flushF=_comio2_serial_flush;
 
   userdata = NULL;
-  
-  
 }
 
 
@@ -712,8 +710,8 @@ Comio2::Comio2()
 int Comio2::run()
 /**
  * \brief     fait "tourner" COMIO.
- * \details   Fonction Ã  appeler le plus souvant possible pour pouvoir prendre en charge les demandes en provenance d'un client et les traiter.
- * \return    0 = pas de trames traitÃ©es ou donnÃ©es incorrectes / <> 0 code de traitement (> 0 Comio1 < 0 Comio2).
+ * \details   Fonction à appeler le plus souvant possible pour pouvoir prendre en charge les demandes en provenance d'un client et les traiter.
+ * \return    0 = pas de trames traitées ou données incorrectes / <> 0 code de traitement (> 0 Comio1 < 0 Comio2).
  */
 {
   if(!availableF())
@@ -726,11 +724,11 @@ int Comio2::run()
 #endif
 
   flag=false;
-  while(availableF() && cptr<10) // lecture jusqu'Ã  10 caractÃ¨res pour dÃ©tecter un dÃ©but de trame
+  while(availableF() && cptr<10) // lecture jusqu'à 10 caractères pour détecter un début de trame
   {
     int c=readF();
 #ifdef _COMIO1_COMPATIBLITY_MODE_
-    if(c=='?') // un dÃ©but de trame "type 1" est dÃ©tectÃ©
+    if(c=='?') // un début de trame "type 1" est détecté
     {
       flag=true;
       new_frame=false;
@@ -745,7 +743,7 @@ int Comio2::run()
     cptr++;
   }
   if(!flag)
-    return 0; // pas de dÃ©but de trame, on rend la main pour ne pas trop bloquer la boucle principale
+    return 0; // pas de début de trame, on rend la main pour ne pas trop bloquer la boucle principale
 
 #ifdef _COMIO1_COMPATIBLITY_MODE_
   if(new_frame)               // format de trame COMIO2
