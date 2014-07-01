@@ -15,7 +15,7 @@ DEBUGFLAGS  = -D__DEBUG_ON__
 CFLAGS      = -std=c99 \
               -D_BSD_SOURCE \
               -O2 \
-              -I macosx/xPLLib \
+              -I openwrt/xPLLib \
               $(DEBUGFLAGS)
 
 LDFLAGS     = -lpthread 
