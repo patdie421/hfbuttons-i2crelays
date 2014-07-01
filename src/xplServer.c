@@ -115,7 +115,7 @@ pthread_t *xPLServer()
       return NULL;
    }
 
-   if(pthread_create (xPL_thread, NULL, _xPL_server_thread, NULL)
+   if(pthread_create (xPL_thread, NULL, _xPL_server_thread, NULL))
    {
       VERBOSE(1) fprintf(stderr, "%s (%s) : pthread_create - can't start thread\n",ERROR_STR,__func__);
       return NULL;

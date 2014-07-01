@@ -1,22 +1,27 @@
 SHELL = /bin/bash
-
 CC = gcc
 
+EXECUTABLE=hfbuttons-i2crelays
+
 DEBUGFLAGS  = -D__DEBUG_ON__
+
 CFLAGS      = -std=c99 \
               -D_BSD_SOURCE \
               -O2 \
+              -I linux/xPLLib \
               $(DEBUGFLAGS)
 LDFLAGS     = -lpthread
+
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=comio2
 
 all: $(SOURCES) $(EXECUTABLE)
 	
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+linux/xPLLib/xPL.a:
+	cd linux/xPLLib ; make
+
+$(EXECUTABLE): $(OBJECTS) linux/xPLLib/xPL.a
+	$(CC) $(OBJECTS) linux/xPLLib/xPL.a $(LDFLAGS) -o $@
 
 clean:
-	-rm -f $(OBJECTS)
-# test
+	-rm -f $(OBJECTS) $(EXECUTALBE); cd linux/xPLLib ; make clean

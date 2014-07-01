@@ -1,31 +1,33 @@
 SHELL = /bin/bash
 CC = gcc
 
+EXECUTABLE=hfbuttons-i2crelays
+
 LINUXOPENWRTTOOLCHAINHOST=192.168.0.42
 LINUXOPENWRTTOLLCHAINUSER=patrice
-
 YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
 
 DEBUGFLAGS  = -D__DEBUG_ON__
+
 CFLAGS      = -std=c99 \
               -D_BSD_SOURCE \
               -O2 \
+              -I macosx/xPLLib \
               $(DEBUGFLAGS)
-LDFLAGS     = -lpthread \
+LDFLAGS     = -lpthread
 
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=hfbuttons-i2crelays
 
 all: $(SOURCES) $(EXECUTABLE)
 	
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+macosx/xPLLib/xPL.a:
+	cd macosx/xPLLib ; make
 
-clean:
-	-rm -f $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) macosx/xPLLib/xPL.a
+	$(CC) $(OBJECTS) macosx/xPLLib/xPL.a $(LDFLAGS) -o $@
 
 openwrtbuild:
 	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt buildfromgit"
@@ -35,3 +37,6 @@ openwrtinstall:
 
 openwrtexec:
 	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)/$(EXECUTABLE)"
+
+clean:
+	-rm -f $(OBJECTS) $(EXECUTALBE); cd macosx/xPLLib ; make clean
