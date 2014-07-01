@@ -4,7 +4,7 @@
 
 #
 # For LINUX, use the following
-CCOPTS = -O2 -D__DARWIN_UNIX03 -pedantic -Wall -g
+CCOPTS = -O2 -pedantic -Wall -g
 LIBS = -lm
 LIBDIR = /usr/local/lib
 INCDIR = /usr/local/include
@@ -26,8 +26,9 @@ CCOPTS = -std=c99
 # *******************************************************
 
 LDOPTS	= -O
+
 CC	=	gcc $(CCOPTS)
-LIBCC	=	$(CC) -fPIC -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/ -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/
+LIBCC	=	$(CC)
 LD	= 	gcc $(LDOPTS)
 
 INCLUDES = xPL.h xPL_priv.h
@@ -44,7 +45,7 @@ xPLLib: $(LIB_OBJS) libxPL.dylib xPL.a
 
 libxPL.dylib: $(LIB_OBJS)
 	@echo "Creating libxPL.dylib..."
-	libtool -dynamic -flat_namespace -lSystem -install_name /usr/local/lib/libxPL.dylib -o libxPL.dylib $(LIB_OBJS) -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/
+	libtool -dynamic -flat_namespace -lSystem -install_name /usr/local/lib/libxPL.dylib -o libxPL.dylib $(LIB_OBJS)
 
 xPL.a: $(LIB_OBJS)
 	@echo "Creating xPL.a..."
