@@ -16,7 +16,7 @@
 
 #include "xPL.h"
 #include "debug.h"
-#include "queue.h"
+#include "error.h"
 #include "memory.h"
 
 #define XPL_VERSION "0.1a2"
