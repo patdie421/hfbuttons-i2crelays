@@ -4,12 +4,13 @@
 //  Created by Patrice DIETSCH on 17/09/12.
 //
 //
-
-#include "debug.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "memory.h"
+#include "error.h"
+#include "debug.h"
 
 
 char *string_malloc_and_copy(char *str, int v)
