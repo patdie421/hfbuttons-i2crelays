@@ -57,7 +57,7 @@ int16_t debug_status()
 
 uint32_t start_chrono(uint32_t *_now)
 /**
- * \brief     gestion d'un chronomètre : lancement du chronomètre
+ * \brief     gestion d'un chronomètre : lancement du chronomètre. la valeur est en milliseconde
  * \param     _now   la variable contiendra la valeur courrante du chrono. _now peut être égal à NULL
  * \return    retour la valeur du chrono (=_now)
  */
@@ -75,7 +75,7 @@ uint32_t start_chrono(uint32_t *_now)
 
 uint32_t take_chrono(uint32_t *_last_time)
 /**
- * \brief     gestion d'un chronomètre : lecture du chrono
+ * \brief     gestion d'un chronomètre : lecture du chrono (en milliseconde)
  * \param     _last_time   valeur retournée par start_chrono
  * \return    différence entre "maintenant" et _last_chrono
  */
