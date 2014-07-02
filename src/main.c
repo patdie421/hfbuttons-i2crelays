@@ -149,6 +149,8 @@ int main(int argc, const char * argv[])
    
    comio2_close(ad);
    
+   sleep(120);
+   
    return 0;
 }
 
