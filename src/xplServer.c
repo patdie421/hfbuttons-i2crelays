@@ -104,6 +104,7 @@ pthread_t *xPLServer()
 
    if(!xpl_deviceID || !xpl_instanceID || !xpl_vendorID)
    {
+      VERBOSE(1) fprintf(stderr, "%s (%s) : xPL address not set\n",ERROR_STR,__func__);
       return NULL;
    }
 
