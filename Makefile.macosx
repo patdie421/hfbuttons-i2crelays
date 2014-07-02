@@ -30,10 +30,10 @@ $(EXECUTABLE): $(OBJECTS) macosx/xPLLib/xPL.a
 	$(CC) $(OBJECTS) macosx/xPLLib/xPL.a $(LDFLAGS) -o $@
 
 openwrtbuild:
-	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt buildfromgit"
+	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun buildfromgit"
 
 openwrtinstall:
-	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.openwrt install"
+	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun install"
 
 openwrtexec:
 	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)/$(EXECUTABLE)"

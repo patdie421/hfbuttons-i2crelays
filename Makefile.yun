@@ -13,8 +13,8 @@ CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc
 DEBUGFLAGS  = -D__DEBUG_ON__
 
 CFLAGS      = -std=c99 \
-              -D_BSD_SOURCE \
               -O2 \
+              -D_BSD_SOURCE \
               -I openwrt/xPLLib \
               $(DEBUGFLAGS)
 
@@ -22,6 +22,7 @@ LDFLAGS     = -lpthread
 
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
+
 EXECUTABLE=hfbuttons-i2crelays
 ARDUINOSKETCH=HFavecComio2.hex
 
@@ -34,15 +35,15 @@ $(EXECUTABLE): $(OBJECTS) openwrt/xPLLib/xPL.a
 	$(CC) $(OBJECTS) openwrt/xPLLib/xPL.a $(LDFLAGS) -o $@
 
 $(ARDUINOSKETCH):
-	cd Arduino/HFavecComio2 ; make ; cp HFavecComio2.hex ../../$(ARDUINOSKETCH)
+	cd Arduino/HFavecComio2 ; make ; cp HFavecComio2.hex ../../$@
 
 clean:
 	rm -f $(OBJECTS) $(EXECUTALBE) .openwrtinstalled $(ARDUINOSKETCH)
 	cd openwrt/xPLLib ; make clean
 	cd Arduino/HFavecComio2 ; make clean
   
-install: $(EXECUTABLE)
-	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
+install: $(EXECUTABLE) $(ARDUINOSKETCH)
+	scp $(EXECUTABLE) $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
 
 .openwrtinstalled: $(EXECUTABLE)
 	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
@@ -54,7 +55,3 @@ getfromgit:
 	git pull
 
 buildfromgit: clean getfromgit $(EXECUTABLE)
-
-
-
-
