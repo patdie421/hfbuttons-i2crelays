@@ -61,6 +61,8 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
 
 void *_xPL_server_thread(void *data)
 {
+   VERBOSE(9) fprintf(stderr,"%s  (%s) : xPLServer thred started\n",INFO_STR,__func__);
+
    if ( !xPL_initialize(xPL_getParsedConnectionType()) ) return 0 ;
    
    xPLService = xPL_createService(xpl_vendorID, xpl_deviceID, xpl_instanceID);
@@ -74,7 +76,7 @@ void *_xPL_server_thread(void *data)
    xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, "control", "basic", (xPL_ObjectPtr)data) ;
    xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, "sensor", "request", (xPL_ObjectPtr)data) ;
    
-   xPL_setServiceEnabled(xPLService, TRUE);
+   xPL_setServiceEnabled(xPLService, TRUE); 
 
    do
    {
