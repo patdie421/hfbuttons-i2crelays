@@ -100,7 +100,7 @@ void test2(comio2_ad_t *ad)
    int ret;
    int16_t err;
 
-   data[0]=2; // numéro de la fonction
+   data[0]=1; // numéro de la fonction
    data[1]=6; // paramètre de la fonction
    data[2]=2; // paramètre de la fonction
    
