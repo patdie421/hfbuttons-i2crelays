@@ -522,7 +522,7 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
         _comio_send_errorV2(id, COMIO2_ERR_PARAMS);
       return 0;
     }
-    if(comio_functionsV2[data[0]])
+    if(comio_functionsV2[(int)data[0]])
     {
       int retval=comio_functionsV2[(int)data[0]](id, &(data[1]), l_data-1, userdata);
       if(id)
