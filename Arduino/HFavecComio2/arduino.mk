@@ -105,6 +105,8 @@
 # BOARD        Specify a target board type.  Run `make boards` to see available
 #              board types.
 #
+# MCUFAMILY    Specify the MCU family (avr/sam)
+#
 # CPPFLAGS     Specify any additional flags for the compiler.  The usual flags,
 #              required to build the project, will be appended to this.
 #
@@ -165,7 +167,7 @@ ARDUINODIR := $(firstword $(wildcard ~/opt/arduino /usr/share/arduino \
 	/Applications/Arduino.app/Contents/Resources/Java \
 	$(HOME)/Applications/Arduino.app/Contents/Resources/Java))
 endif
-ifeq "$(wildcard $(ARDUINODIR)/hardware/arduino/avr/boards.txt)" ""
+ifeq "$(wildcard $(ARDUINODIR)/hardware/arduino/$(MCUFAMILY)/boards.txt)" ""
 $(error ARDUINODIR is not set correctly; arduino software not found)
 endif
 
@@ -174,10 +176,10 @@ ARDUINOCONST ?= 100
 
 # default path for avr tools
 AVRTOOLSPATH ?= $(subst :, , $(PATH)) $(ARDUINODIR)/hardware/tools \
-	$(ARDUINODIR)/hardware/tools/avr/bin
+	$(ARDUINODIR)/hardware/tools/$(MCUFAMILY)/bin
 
 # default path to find libraries
-LIBRARYPATH ?= libraries libs $(SKETCHBOOKDIR)/libraries $(ARDUINODIR)/hardware/arduino/avr/libraries
+LIBRARYPATH ?= libraries libs $(SKETCHBOOKDIR)/libraries $(ARDUINODIR)/hardware/arduino/$(MCUFAMILY)/libraries
 
 # default serial device to a poor guess (something that might be an arduino)
 SERIALDEVGUESS := 0
@@ -196,8 +198,12 @@ endif
 endif
 endif
 
+ifndef MCUFAMILY
+$(error MCUFAMILY is unset.  Type possible values are : avr | sam)
+endif
+
 # obtain board parameters from the arduino boards.txt file
-BOARDSFILE := $(ARDUINODIR)/hardware/arduino/avr/boards.txt
+BOARDSFILE := $(ARDUINODIR)/hardware/arduino/$(MCUFAMILY)/boards.txt
 readboardsparam = $(shell sed -ne "s/$(BOARD).$(1)=\(.*\)/\1/p" $(BOARDSFILE))
 BOARD_BUILD_MCU := $(call readboardsparam,build.mcu)
 BOARD_BUILD_FCPU := $(call readboardsparam,build.f_cpu)
@@ -262,7 +268,7 @@ AVRDUDE := $(call findsoftware,avrdude)
 AVRSIZE := $(call findsoftware,avr-size)
 
 # directories
-ARDUINOCOREDIR := $(ARDUINODIR)/hardware/arduino/avr/cores/arduino
+ARDUINOCOREDIR := $(ARDUINODIR)/hardware/arduino/$(MCUFAMILY)/cores/arduino
 LIBRARYDIRS := $(foreach lib, $(LIBRARIES), \
 	$(firstword $(wildcard $(addsuffix /$(lib), $(LIBRARYPATH)))))
 LIBRARYDIRS += $(addsuffix /utility, $(LIBRARYDIRS))
@@ -281,7 +287,7 @@ BOOTLOADERHEX := $(addprefix \
 # avrdude confifuration
 ifeq "$(AVRDUDECONF)" ""
 ifeq "$(AVRDUDE)" "$(ARDUINODIR)/hardware/tools/avr/bin/avrdude"
-AVRDUDECONF := $(ARDUINODIR)/hardware/tools/avr/etc/avrdude.conf
+AVRDUDECONF := $(ARDUINODIR)/hardware/tools/avrdude.conf
 else
 AVRDUDECONF := $(wildcard $(AVRDUDE).conf)
 endif
@@ -294,7 +300,7 @@ CPPFLAGS += -mmcu=$(BOARD_BUILD_MCU)
 CPPFLAGS += -DF_CPU=$(BOARD_BUILD_FCPU) -DARDUINO=$(ARDUINOCONST)
 CPPFLAGS += -DUSB_VID=$(BOARD_USB_VID) -DUSB_PID=$(BOARD_USB_PID)
 CPPFLAGS += -I. -Iutil -Iutility -I $(ARDUINOCOREDIR)
-CPPFLAGS += -I $(ARDUINODIR)/hardware/arduino/avr/variants/$(BOARD_BUILD_VARIANT)/
+CPPFLAGS += -I $(ARDUINODIR)/hardware/arduino/$(MCUFAMILY)/variants/$(BOARD_BUILD_VARIANT)/
 CPPFLAGS += $(addprefix -I , $(LIBRARYDIRS))
 CPPDEPFLAGS = -MMD -MP -MF .dep/$<.dep
 CPPINOFLAGS := -x c++ -include $(ARDUINOCOREDIR)/Arduino.h
