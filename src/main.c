@@ -16,7 +16,7 @@
 
 #include "debug.h"
 #include "comio2.h"
-#include "xPLServer.h"
+#include "xplServer.h"
 
 /*
   Format d'une trame "question" COMIO2
