@@ -1,7 +1,15 @@
 SHELL = /bin/bash
+
+ARDUINOSKETCH=HFavecComio2.hex
+ARDUINOSKETCHDIR=Arduino/HFavecComio2
+EXECUTABLE=hfbuttons-i2crelays
+YUNINSTALLFLAG=.lininoinstalled
 YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
+
+XPLLIB=xPL.a
+XPLLIBDIR=openwrt/xPLLib
 
 # voir :
 # http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
@@ -22,16 +30,6 @@ LDFLAGS     = -lpthread
 
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
-
-XPLLIB=xPL.a
-XPLLIBDIR=openwrt/xPLLib
-
-ARDUINOSKETCH=HFavecComio2.hex
-ARDUINOSKETCHDIR=Arduino/HFavecComio2
-
-EXECUTABLE=hfbuttons-i2crelays
-
-YUNINSTALLFLAG=.lininoinstalled
 
 all: $(SOURCES) $(EXECUTABLE) $(ARDUINOSKETCH)
 
