@@ -23,35 +23,51 @@ LDFLAGS     = -lpthread
 SOURCES=$(shell echo src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
 
-EXECUTABLE=hfbuttons-i2crelays
+XPLLIB=xPL.a
+XPLLIBDIR=openwrt/xPLLib
+
 ARDUINOSKETCH=HFavecComio2.hex
+ARDUINOSKETCHDIR=Arduino/HFavecComio2
+
+EXECUTABLE=hfbuttons-i2crelays
+
+YUNINSTALLFLAG=.lininoinstalled
 
 all: $(SOURCES) $(EXECUTABLE) $(ARDUINOSKETCH)
 
-openwrt/xPLLib/xPL.a:
-	cd openwrt/xPLLib ; make
+$(XPLLIBDIR)/$(XPLLIB):
+	cd $(XPLLIBDIR) ; make
 
-$(EXECUTABLE): $(OBJECTS) openwrt/xPLLib/xPL.a
-	$(CC) $(OBJECTS) openwrt/xPLLib/xPL.a $(LDFLAGS) -o $@
+$(EXECUTABLE): $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB)
+	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
 
 $(ARDUINOSKETCH):
-	cd Arduino/HFavecComio2 ; make ; cp HFavecComio2.hex ../../$@
+	cd $(ARDUINOSKETCHDIR) ; make ; cp $@ ../../$@
 
-clean:
-	rm -f $(OBJECTS) $(EXECUTALBE) .openwrtinstalled $(ARDUINOSKETCH)
-	cd openwrt/xPLLib ; make clean
-	cd Arduino/HFavecComio2 ; make clean
-  
-install: $(EXECUTABLE) $(ARDUINOSKETCH)
-	scp $(EXECUTABLE) $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
+cleanlinino:
+	rm -f $(OBJECTS) $(EXECUTALBE) $(YUNINSTALLFLAG)
 
-.openwrtinstalled: $(EXECUTABLE)
-	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
+cleanxpllib:
+	cd $(XPLLIBDIR) ; make clean
+
+cleanarduino:
+	rm $(ARDUINOSKETCH) ; cd $(ARDUINOSKETCHDIR) ; make clean
+
+cleanall:
+	rm -f $(OBJECTS) $(EXECUTALBE) $(YUNINSTALLFLAG) $(ARDUINOSKETCH)
+	cd $(XPLLIBDIR) ; make clean
+	cd $(ARDUINOSKETCHDIR) ; make clean
  
-exec: .openwrtinstalled
+install: $(EXECUTABLE) $(ARDUINOSKETCH)
+	scp $(EXECUTABLE) $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch $(YUNINSTALLFLAG)
+
+$(YUNINSTALLFLAG): $(EXECUTABLE)
+	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch $(YUNINSTALLFLAG)
+ 
+exec: $(YUNINSTALLFLAG)
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
 getfromgit:
 	git pull
 
-buildfromgit: clean getfromgit $(EXECUTABLE)
+buildfromgit: cleanall getfromgit $(EXECUTABLE)
