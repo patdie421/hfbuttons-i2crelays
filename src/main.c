@@ -30,6 +30,22 @@
 */
 
 
+int16_t set_xpl_address()
+/**
+ * \brief     initialise les données pour l'adresse xPL
+ * \details   positionne vendorID, deviceID et instanceID pour xPLServer
+ * \param     params_liste  liste des parametres.
+ * \return   -1 en cas d'erreur, 0 sinon
+ */
+{
+   set_xPL_vendorID("mea");
+   set_xPL_deviceID("hfedomus");
+   set_xPL_instanceID("inst1");
+   
+   return 0;
+}
+
+
 int16_t test_trap(int16_t num, char *data, int16_t l_data, void *userdata)
 {
    printf("TRAP #%d : %s\n", num, (char *)userdata);
@@ -124,6 +140,8 @@ int main(int argc, const char * argv[])
    char *userdata2="test user data2";
    
    set_verbose_level(9);
+
+   set_xpl_address();
    
    xPLServer();
    
