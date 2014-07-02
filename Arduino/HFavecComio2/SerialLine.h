@@ -1,6 +1,6 @@
 #ifndef __SERIALLINE__
 #define __SERIALLINE__
-#include <arduino.h>
+#include <Arduino.h>
 #define MYPARSEINTBUFFSIZE 10
 #define LINE_MAX_CARS 40
 
