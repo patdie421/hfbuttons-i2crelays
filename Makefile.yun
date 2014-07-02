@@ -73,4 +73,4 @@ exec: $(YUNINSTALLFLAG)
 getfromgit:
 	git pull
 
-buildfromgit: cleanall getfromgit $(EXECUTABLE)
+buildfromgit: cleanall getfromgit $(EXECUTABLE) $(ARDUINOSKETCH)
