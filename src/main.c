@@ -16,6 +16,7 @@
 
 #include "debug.h"
 #include "comio2.h"
+#include "xPLServer.h"
 
 /*
   Format d'une trame "question" COMIO2
@@ -123,6 +124,8 @@ int main(int argc, const char * argv[])
    char *userdata2="test user data2";
    
    set_verbose_level(9);
+   
+   xPLServer();
    
    ad=comio2_new_ad();
    ret=comio2_init(ad, serial, B115200);
