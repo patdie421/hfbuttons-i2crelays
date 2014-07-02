@@ -347,7 +347,7 @@ int Comio2::_comio_read_frameV2(unsigned char *id, unsigned char *cmd, char *dat
    End(1)[]]   : octet de fin de trame.
    */
   int c=0;
-  uint16_t j=0;
+  int16_t j=0;
   uint8_t stat=0;
   int cchecksum=0;
 
@@ -484,8 +484,8 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
     _comio_debut_trameV2(id, COMIO2_CMD_READMEMORY, l_data, &cchecksum);
     for(int i=0;i<l_data;i++)
     {
-      cchecksum+=comio_memory[data[i]];
-      writeF(comio_memory[data[i]]);
+      cchecksum+=comio_memory[(int)data[i]];
+      writeF(comio_memory[(int)data[i]]);
     }
     _comio_fin_trameV2(&cchecksum);
     return -1;
@@ -501,7 +501,7 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
 
     for(int i=0; i<l_data; i+=2)
     {
-      comio_memory[data[i]]=data[i+1];
+      comio_memory[(int)data[i]]=data[i+1];
       j++;
     }
 
@@ -524,7 +524,7 @@ int Comio2::_comio_do_operationV2(unsigned char id, unsigned char cmd, char *dat
     }
     if(comio_functionsV2[data[0]])
     {
-      int retval=comio_functionsV2[data[0]](id, &(data[1]), l_data-1, userdata);
+      int retval=comio_functionsV2[(int)data[0]](id, &(data[1]), l_data-1, userdata);
       if(id)
       {
         uint8_t r=0;
