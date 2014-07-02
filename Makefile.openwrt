@@ -40,7 +40,7 @@ clean:
 install: $(EXECUTABLE)
 	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
 
-exec: .openwrtinstall
+exec: .openwrtinstalled
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
 getfromgit:
