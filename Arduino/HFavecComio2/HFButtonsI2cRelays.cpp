@@ -45,7 +45,7 @@ int8_t i2cScan(SerialLine *line)
     }
     else
     {
-      line->writeLine(" --\n");
+      line->writeLine((char *)" --\n");
     }
   }
   if (nDevices == 0)
