@@ -111,7 +111,7 @@ void setup()
   {
      Serial.setTimeout(25); // timeout apres 25ms pour les Serial.read
 #ifdef DEBUG
-     Serial.println(PSTR("Started !!!"));
+     Serial.println("Started !!!");
 #endif
      linePtr=&line;
   }
