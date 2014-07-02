@@ -37,7 +37,7 @@ private:
   uint8_t getNet() {
     return net;
   };
-  uint8_t setRolling(uint8_t addr, uint8_t value) {
+  void setRolling(uint8_t addr, uint8_t value) {
     rollings[addr] = value;
   };
   uint8_t getRolling(uint8_t addr) {
