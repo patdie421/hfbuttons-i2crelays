@@ -18,7 +18,7 @@ extern char *xpl_instanceID;
 
 typedef int16_t (*xpl_f)(xPL_ServicePtr,xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
 
-pthread_t *xPLServer(queue_t *interfaces);
+pthread_t *xPLServer();
 xPL_ServicePtr get_xPL_ServicePtr();
 char *set_xPL_vendorID(char *value);
 char *set_xPL_deviceID(char *value);
