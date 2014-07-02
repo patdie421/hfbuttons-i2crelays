@@ -127,8 +127,6 @@ int main(int argc, const char * argv[])
    
    xPLServer();
    
-   sleep(10);
-   
    ad=comio2_new_ad();
    ret=comio2_init(ad, serial, B115200);
    if(ret<0)
