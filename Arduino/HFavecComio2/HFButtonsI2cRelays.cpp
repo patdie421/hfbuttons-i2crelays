@@ -27,7 +27,7 @@ int8_t i2cScan(SerialLine *line)
   byte error, address;
   int nDevices;
 
-  line->writeLine("\nScanning i2c bus ...\n");
+  line->writeLine((char *)"\nScanning i2c bus ...\n");
   nDevices = 0;
   for(address = 1; address < 127; address++ )
   {
@@ -37,10 +37,10 @@ int8_t i2cScan(SerialLine *line)
     Wire.beginTransmission(address);
     error = Wire.endTransmission();
     line->writeHex(address);
-    line->writeLine(":");
+    line->writeLine((char *)":");
     if (error == 0)
     {
-      line->writeLine(" Ok\n");
+      line->writeLine((char *)" Ok\n");
       nDevices++;
     }
     else
@@ -49,9 +49,9 @@ int8_t i2cScan(SerialLine *line)
     }
   }
   if (nDevices == 0)
-    line->writeLine("No I2C devices found\n");
+    line->writeLine((char *)"No I2C devices found\n");
   else
-    line->writeLine("done\n");
+    line->writeLine((char *)"done\n");
   return 1;
 }
 
@@ -216,10 +216,10 @@ int8_t HFButtonsI2cRelays::saveButtonToEeprom(uint8_t button_addr, uint8_t butto
 
 int8_t HFButtonsI2cRelays::print(SerialLine *line)
 {
-  line->writeLine("\n$NET$\n");
+  line->writeLine((char *)"\n$NET$\n");
   line->writeByte((byte)getNet());
-  line->writeLine("\n#NET#\n");
-  line->writeLine("$LIST$\n");
+  line->writeLine((char *)"\n#NET#\n");
+  line->writeLine((char *)"$LIST$\n");
   for(int i=0;i<NB_INTERFACES;i++)
   {
     for(int j=0;j<NB_BOUTONS_INTERFACE;j++)
@@ -227,17 +227,17 @@ int8_t HFButtonsI2cRelays::print(SerialLine *line)
       if(assocs_button_relay[i][j].relay_addr != 255)
       {
         line->writeByte((byte)i);
-        line->writeLine(";");
+        line->writeLine((char *)";");
         line->writeByte((byte)j);
-        line->writeLine(";");
+        line->writeLine((char *)";");
         line->writeByte((byte)assocs_button_relay[i][j].relay_addr);
-        line->writeLine(";");
+        line->writeLine((char *)";");
         line->writeByte((byte)assocs_button_relay[i][j].relay_num);
-        line->writeLine("\n");
+        line->writeLine((char *)"\n");
       }
     }
   }
-  line->writeLine("#LIST#");
+  line->writeLine((char *)"#LIST#");
   return 1;
 }
 
@@ -510,21 +510,21 @@ void HFButtonsI2cRelays::run()
       {
         int flag=interractiveCmd(); // traitement de la ligne
         if(flag == 0)
-           line->writeLine("\nSYNTAX OR PARAMETER(S) ERROR");
+           line->writeLine((char *)"\nSYNTAX OR PARAMETER(S) ERROR");
         else if(flag == 1)
-           line->writeLine("\nOK");
+           line->writeLine((char *)"\nOK");
         else if(flag == 2)
-          line->writeLine("\nUNKNOWN COMMAND");
+          line->writeLine((char *)"\nUNKNOWN COMMAND");
         else if(flag == -1)
           return;
         else
-          line->writeLine("\n???");
+          line->writeLine((char *)"\n???");
         line->flush(); // on vide le buffer pour repartir à 0.
         line->writeLine(prompt_str);
       }
       else if(n<0)
       {
-        line->writeLine("\nOverflow !!!\n");
+        line->writeLine((char *)"\nOverflow !!!\n");
       }
     }
   }
