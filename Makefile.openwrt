@@ -32,15 +32,15 @@ openwrt/xPLLib/xPL.a:
 $(EXECUTABLE): $(OBJECTS) openwrt/xPLLib/xPL.a
 	$(CC) $(OBJECTS) openwrt/xPLLib/xPL.a $(LDFLAGS) -o $@
 
-.openwrtinstalled: $(EXECUTABLE)
-  install
- 
 clean:
-	-rm -f $(OBJECTS) $(EXECUTALBE) .openwrtinstalled ; cd openwrt/xPLLib ; make clean
+	rm -f $(OBJECTS) $(EXECUTALBE) .openwrtinstalled ; cd openwrt/xPLLib ; make clean
   
-install:
+install: $(EXECUTABLE)
 	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
 
+.openwrtinstalled: $(EXECUTABLE)
+	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch .openwrtinstalled
+ 
 exec: .openwrtinstalled
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
