@@ -107,8 +107,7 @@ int SerialLine::readLine()
       return 0;
     }
   }
-  else
-    return -1;
+  return -1;
 }
 
 
@@ -135,7 +134,7 @@ int SerialLine::writeHex(byte c)
   if(serial)
   {
     if (c<16)
-      serial->print(PSTR("0"));
+      serial->print("0");
     return serial->print(c, HEX);
   }
   else

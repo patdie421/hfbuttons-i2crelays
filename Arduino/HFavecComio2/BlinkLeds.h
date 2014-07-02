@@ -11,7 +11,7 @@ public:
   }
   void blink(int pin);
 private:
-  int interval;
+  unsigned int interval;
   int ledState;
   unsigned long previousMillis;
 };
