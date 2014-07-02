@@ -59,7 +59,7 @@ int8_t i2cScan(SerialLine *line)
 int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
 {
   uint8_t cmd = command << 4;
-  cmd = cmd | relay_num & 0x0F;
+  cmd = cmd | (relay_num & 0x0F);
   Wire.beginTransmission(relay_addr);
   Wire.write(cmd);
   Wire.endTransmission();
@@ -288,7 +288,7 @@ void HFButtonsI2cRelays::HFCmd()
           if(buf[2] == 'V') // etat pile
           {
 #ifdef DEBUG
-            Serial.print(PSTR("V="));
+            Serial.print("V=");
             Serial.print(buf[3]);
             Serial.print(prompt_str);
 #endif
