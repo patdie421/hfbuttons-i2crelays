@@ -44,6 +44,6 @@ $(TECHNO).objects:
 	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
 
 clean:
-	-rm -f $(TECHNO).objects/*.o $(EXECUTALBE) .deps/*.dep
+	rm -f $(TECHNO).objects/*.o $(EXECUTALBE) .deps/*.dep
  
 -include .deps/*.dep
