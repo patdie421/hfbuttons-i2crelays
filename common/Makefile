@@ -26,7 +26,7 @@ all: .dep $(TECHNO).objects ../$(TECHNO)/$(EXECUTABLE)
 $(TECHNO).objects:
 	@mkdir -p $(TECHNO).objects
 
-../$(TECHNO)/$(EXECUTABLE): $(OBJECTS)
+../$(TECHNO)/$(EXECUTABLE): $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB)
 	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
 
 clean:

@@ -23,14 +23,18 @@ all:
 	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 	cd $(ARDUINOSKETCHDIR) ; make
 
-clean: cleancommon
+clean: cleancommon cleanxpllib cleanarduino
+
+cleanxpllib:
 	cd $(XPLLIBDIR) ; make clean
-	cd $(ARDUINOSKETCHDIR) ; make clean
-	rm -f $(YUNINSTALLFLAG)
-	rm -f $(ARDUINOSKETCH)
- 
+	 
 cleancommon:
+	rm -f $(YUNINSTALLFLAG)
 	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
+
+cleanarduino:
+	rm -f $(ARDUINOSKETCH)
+	cd $(ARDUINOSKETCHDIR) ; make clean
 
 $(YUNINSTALLFLAG):
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
