@@ -1,3 +1,16 @@
+ifndef TECHNO
+$(error TECHNO is unset, set it to openwrt, linux or macosx)
+endif
+ifndef EXECUTABLE
+EXECUTABLE=hfbuttons-i2crelays
+endif
+ifndef CC
+CC = gcc
+ifeq "$(TECHNO)" "openwrt"
+CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc
+endif
+endif
+
 SHELL = /bin/bash
 XPLLIB=xPL.a
 XPLLIBDIR=../$(TECHNO)/xPLLib
