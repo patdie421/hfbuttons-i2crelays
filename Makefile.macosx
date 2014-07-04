@@ -20,18 +20,18 @@ CFLAGS      = -std=c99 \
               $(DEBUGFLAGS)
 LDFLAGS     = -lpthread
 
+all:
+	cd $(XPLLIBDIR) ; make
+	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
+
 openwrtbuild:
-	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun buildfromgit"
+	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun buildfromgit"
 
 openwrtinstall:
 	ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun install"
 
 openwrtexec:
 	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)/$(EXECUTABLE)"
-
-all:
-	cd $(XPLLIBDIR) ; make
-	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 
 clean: cleancommon
 	cd $(XPLLIBDIR) ; make clean
