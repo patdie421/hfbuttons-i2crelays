@@ -130,6 +130,34 @@ void test2(comio2_ad_t *ad)
 }
 
 
+void test3(comio2_ad_t *ad)
+{
+   char data[255];
+   int ret;
+   int16_t err;
+
+   data[0]=1;   // numéro de la fonction
+   data[1]='T'; // paramètre de la fonction
+   data[2]=41;  // paramètre de la fonction
+   data[3]=1;   // paramètre de la fonction
+   
+   printf("Test appel de fonctions 2\n");
+   printf("-------------------------\n");
+   for(int i=0;i<30;i++)
+   {
+      printf("Boucle %d :\n",i);
+      ret = comio2_atCmdSend(ad, COMIO2_CMD_CALLFUNCTION, data, 4, &err);
+      printf("RETCODE : %d\n", ret);
+      if(!ret)
+      {
+      }
+      else
+         printf("ERRORCODE = %d\n", err);
+      sleep(1);
+   }
+}
+
+
 static char *serial = "/dev/ttyATH0";
 
 int main(int argc, const char * argv[])
@@ -165,6 +193,9 @@ int main(int argc, const char * argv[])
    test2(ad);
    printf("\n");
    
+   test3(ad);
+   printf("\n");
+
    comio2_close(ad);
       
    return 0;
