@@ -47,3 +47,9 @@ installsketch: $(ARDUINOSKETCH)
 
 exec: $(YUNINSTALLFLAG)
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
+
+getfromgit:
+	git pull
+
+buildfromgit: getfromgit all
+	

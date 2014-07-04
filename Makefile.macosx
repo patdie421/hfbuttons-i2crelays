@@ -1,8 +1,10 @@
 SHELL = /bin/bash
 CC = gcc
-
+TECHNO=macosx
 EXECUTABLE=hfbuttons-i2crelays
-
+XPLLIB=xPL.a
+XPLLIBDIR=$(TECHNO)/xPLLib
+COMMON=common
 LINUXOPENWRTTOOLCHAINHOST=192.168.0.42
 LINUXOPENWRTTOLLCHAINUSER=patrice
 YUNHOST = 192.168.0.253
@@ -18,17 +20,6 @@ CFLAGS      = -std=c99 \
               $(DEBUGFLAGS)
 LDFLAGS     = -lpthread
 
-SOURCES=$(shell echo src/*.c)
-OBJECTS=$(SOURCES:.c=.o)
-
-all: $(SOURCES) $(EXECUTABLE)
-	
-macosx/xPLLib/xPL.a:
-	cd macosx/xPLLib ; make
-
-$(EXECUTABLE): $(OBJECTS) macosx/xPLLib/xPL.a
-	$(CC) $(OBJECTS) macosx/xPLLib/xPL.a $(LDFLAGS) -o $@
-
 openwrtbuild:
 	git push googlecode master:master ; ssh $(LINUXOPENWRTTOLLCHAINUSER)@$(LINUXOPENWRTTOOLCHAINHOST) ". .bash_aliases ; cd Developpement/$(EXECUTABLE) ; make -f Makefile.yun buildfromgit"
 
@@ -38,5 +29,12 @@ openwrtinstall:
 openwrtexec:
 	ssh $(YUNUSER)@$(YUNHOST) "$(YUNDIR)/$(EXECUTABLE)"
 
-clean:
-	-rm -f $(OBJECTS) $(EXECUTALBE); cd macosx/xPLLib ; make clean
+all:
+	cd $(XPLLIBDIR) ; make
+	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
+
+clean: cleancommon
+	cd $(XPLLIBDIR) ; make clean
+ 
+cleancommon:
+	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
