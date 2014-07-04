@@ -1,5 +1,5 @@
 ifndef TECHNO
-$(error TECHNO is unset, set it : to openwrt, linux or macosx)
+$(error - TECHNO is unset, set it : to openwrt, linux or macosx)
 endif
 
 ifndef EXECUTABLE
