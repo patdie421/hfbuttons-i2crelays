@@ -28,4 +28,3 @@ extern char *_warning_str;
 #define FATAL_ERROR_STR _fatal_error_str
 #define WARNING_STR _warning_str
 #endif
-

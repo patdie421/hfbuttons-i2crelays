@@ -1,27 +1,19 @@
 SHELL = /bin/bash
+
+TECHNO=linux
+EXECUTABLE=hfbuttons-i2crelays
+XPLLIB=xPL.a
+XPLLIBDIR=$(TECHNO)/xPLLib
+COMMON=common
+
 CC = gcc
 
-EXECUTABLE=hfbuttons-i2crelays
+all:
+	cd $(XPLLIBDIR) ; make
+	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 
-DEBUGFLAGS  = -D__DEBUG_ON__
-
-CFLAGS      = -std=c99 \
-              -D_BSD_SOURCE \
-              -O2 \
-              -I linux/xPLLib \
-              $(DEBUGFLAGS)
-LDFLAGS     = -lpthread
-
-SOURCES=$(shell echo src/*.c)
-OBJECTS=$(SOURCES:.c=.o)
-
-all: $(SOURCES) $(EXECUTABLE)
-	
-linux/xPLLib/xPL.a:
-	cd linux/xPLLib ; make
-
-$(EXECUTABLE): $(OBJECTS) linux/xPLLib/xPL.a
-	$(CC) $(OBJECTS) linux/xPLLib/xPL.a $(LDFLAGS) -o $@
-
-clean:
-	-rm -f $(OBJECTS) $(EXECUTALBE); cd linux/xPLLib ; make clean
+clean: cleancommon
+	cd $(XPLLIBDIR) ; make clean
+ 
+cleancommon:
+	cd $(COMMON) ; make TECHNO=$(TECHNO) clean

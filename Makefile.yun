@@ -1,5 +1,6 @@
 SHELL = /bin/bash
 
+TECHNO=openwrt
 ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
 EXECUTABLE=hfbuttons-i2crelays
@@ -7,68 +8,38 @@ YUNINSTALLFLAG=.lininoinstalled
 YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
-
 XPLLIB=xPL.a
-XPLLIBDIR=openwrt/xPLLib
+XPLLIBDIR=$(TECHNO)/xPLLib
+COMMON=common
 
 # voir :
 # http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
 # pour la mise en place des cles ssh
 
-OPENWRTSDKTOOLCHAIN_DIR = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
-CC = $(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc 
+CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc 
 
-DEBUGFLAGS  = -D__DEBUG_ON__
-
-CFLAGS      = -std=c99 \
-              -O2 \
-              -D_BSD_SOURCE \
-              -I openwrt/xPLLib \
-              $(DEBUGFLAGS)
-
-LDFLAGS     = -lpthread 
-
-SOURCES=$(shell echo src/*.c)
-OBJECTS=$(SOURCES:.c=.o)
-
-all: $(SOURCES) $(EXECUTABLE) $(ARDUINOSKETCH)
-
-$(XPLLIBDIR)/$(XPLLIB):
+all:
 	cd $(XPLLIBDIR) ; make
+	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
+	cd $(ARDUINOSKETCHDIR) ; make
 
-$(EXECUTABLE): $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB)
-	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
-
-$(ARDUINOSKETCH):
-	cd $(ARDUINOSKETCHDIR) ; make ; cp $@ ../../$@
-
-cleanlinino:
-	rm -f $(OBJECTS) $(EXECUTALBE) $(YUNINSTALLFLAG)
-
-cleanxpllib:
-	cd $(XPLLIBDIR) ; make clean
-
-cleanarduino:
-	rm $(ARDUINOSKETCH) ; cd $(ARDUINOSKETCHDIR) ; make clean
-
-cleanall:
-	rm -f $(OBJECTS) $(EXECUTALBE) $(YUNINSTALLFLAG) $(ARDUINOSKETCH)
+clean: cleancommon
 	cd $(XPLLIBDIR) ; make clean
 	cd $(ARDUINOSKETCHDIR) ; make clean
+	rm -f $(YUNINSTALLFLAG)
+	rm -f $(ARDUINOSKETCH)
  
-install: $(EXECUTABLE)
-	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch $(YUNINSTALLFLAG)
+cleancommon:
+	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
+
+$(YUNINSTALLFLAG):
+	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
+	touch $(YUNINSTALLFLAG);
+
+install: $(YUNINSTALLFLAG)
 
 installsketch: $(ARDUINOSKETCH)
 	scp $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; ssh $(YUNUSER)@$(YUNHOST) run-avrdude $(ARDUINOSKETCH)
 
-$(YUNINSTALLFLAG): $(EXECUTABLE)
-	scp $(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; touch $(YUNINSTALLFLAG)
- 
 exec: $(YUNINSTALLFLAG)
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
-
-getfromgit:
-	git pull
-
-buildfromgit: cleanall getfromgit $(EXECUTABLE) $(ARDUINOSKETCH)

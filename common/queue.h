@@ -42,4 +42,3 @@ mea_error_t clear_queue(queue_t *queue,free_data_f f);
 mea_error_t remove_current_queue(queue_t *queue);
 
 #endif
-

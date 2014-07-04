@@ -1,6 +1,5 @@
 #include "comio2.h"
 
-
 //
 //
 // Méthodes pour le protocole V1
