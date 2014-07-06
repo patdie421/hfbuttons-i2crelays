@@ -63,8 +63,3 @@ hubdist: rebuild
 	tar czf ../../web/xPLHub.tgz xPL_Hub xPL_Hub_static xPLHub_INSTALL.txt
 
 rebuild: clean all
-
-
-
-
-

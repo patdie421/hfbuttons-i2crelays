@@ -8,7 +8,9 @@ CCOPTS = -O2 -DLINUX -pedantic -Wall -g
 LIBS = -lm
 LIBDIR = /usr/local/lib
 INCDIR = /usr/local/include
-
+#
+# For Openwrt crosscompilation
+OPENWRTSDKTOOLCHAIN_DIR=$(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
 
 # For UnixWare systems, use the following
 # CCOPTS = -O2 -DUNIXWARE
@@ -16,26 +18,18 @@ INCDIR = /usr/local/include
 
 #
 # For Alpha/DEC OSF/Tru64
-#
 # CCOPTS = -O2 -DTRU64
 # LIBS = -lm
 
 # *******************************************************
 # ******* No more customizations from here down *********
 # *******************************************************
-
 LDOPTS	= -O
 
-OPENWRTSDKTOOLCHAIN_DIR=$(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
-
 #CC	=	cc $(CCOPTS)
-#CC	=	$(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(CCOPTS)
 CC=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc $(CCOPTS)
-
 LIBCC=$(CC) -fPIC
-
 #LD	= cc $(LDOPTS)
-#LD  = $(OPENWRT_BIN_GCC_DIR)/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
 LD=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
 
 INCLUDES = xPL.h xPL_priv.h

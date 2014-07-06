@@ -20,6 +20,7 @@ CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-op
 
 all:
 	cd $(XPLLIBDIR) ; make
+	cd $(XPLLIBDIR)/examples ; make
 	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 	cd $(ARDUINOSKETCHDIR) ; make
 
@@ -27,6 +28,7 @@ clean: cleancommon cleanxpllib cleanarduino
 
 cleanxpllib:
 	cd $(XPLLIBDIR) ; make clean
+	cd $(XPLLIBDIR)/examples ; make clean
 	 
 cleancommon:
 	rm -f $(YUNINSTALLFLAG)
