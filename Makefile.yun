@@ -42,12 +42,12 @@ $(YUNINSTALLFLAG):
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
 	touch $(YUNINSTALLFLAG);
 
-install: $(YUNINSTALLFLAG)
+installserver: $(YUNINSTALLFLAG)
 
 installsketch: $(ARDUINOSKETCH)
 	scp $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; ssh $(YUNUSER)@$(YUNHOST) run-avrdude $(ARDUINOSKETCH)
 
-exec: $(YUNINSTALLFLAG)
+execserver: $(YUNINSTALLFLAG)
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
 getfromgit: clean

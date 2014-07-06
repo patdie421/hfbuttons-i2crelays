@@ -1,8 +1,9 @@
+# fichier mis à jour pour compilation YUN (arduino 1.5x)
 #_______________________________________________________________________________
 #
 #                         edam's Arduino makefile
 #_______________________________________________________________________________
-#                                                                    version 0.5
+#                                                                   version 0.5a
 #
 # Copyright (C) 2011, 2012, 2013 Tim Marston <tim@ed.am>.
 #
@@ -105,7 +106,7 @@
 # BOARD        Specify a target board type.  Run `make boards` to see available
 #              board types.
 #
-# MCUFAMILY    Specify the MCU family (avr/sam)
+# MCUFAMILY    Specify the MCU family (avr/sam) (Patrice Dietsch)
 #
 # CPPFLAGS     Specify any additional flags for the compiler.  The usual flags,
 #              required to build the project, will be appended to this.

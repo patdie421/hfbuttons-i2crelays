@@ -1,5 +1,5 @@
 ifndef TECHNO
-$(error TECHNO is unset, set it : to openwrt, linux or macosx)
+$(error - TECHNO is unset, set it : to openwrt, linux or macosx)
 endif
 
 ifndef EXECUTABLE
@@ -44,6 +44,6 @@ $(TECHNO).objects:
 	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
 
 clean:
-	-rm -f $(TECHNO).objects/*.o $(EXECUTALBE) .deps/*.dep
+	rm -f $(TECHNO).objects/*.o $(EXECUTALBE) .deps/*.dep
  
 -include .deps/*.dep
