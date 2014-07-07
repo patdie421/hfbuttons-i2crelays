@@ -4,7 +4,6 @@ TECHNO=openwrt
 ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
 EXECUTABLE=hfbuttons-i2crelays
-YUNINSTALLFLAG=.lininoinstalled
 YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
@@ -38,16 +37,13 @@ cleanarduino:
 	rm -f $(ARDUINOSKETCH)
 	cd $(ARDUINOSKETCHDIR) ; make clean
 
-$(YUNINSTALLFLAG):
+installserver: all
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
-	touch $(YUNINSTALLFLAG);
 
-installserver: $(TECHNO)/$(EXECUTABLE) $(YUNINSTALLFLAG)
-
-installsketch: $(ARDUINOSKETCH)
+installsketch: all
 	scp $(ARDUINOSKETCH) $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; ssh $(YUNUSER)@$(YUNHOST) run-avrdude $(ARDUINOSKETCH)
 
-execserver: $(YUNINSTALLFLAG)
+execserver:
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
 getfromgit: clean

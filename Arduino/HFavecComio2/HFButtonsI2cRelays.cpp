@@ -65,7 +65,7 @@ int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
   Wire.write(cmd);
   Wire.endTransmission();
   
-  if(Wire.requestFrom(relay_addr, 1))
+  if(Wire.requestFrom((int)relay_addr, 1))
   {
      state=Wire.read();
      
@@ -89,7 +89,7 @@ int relayGetState(uint8_t relay_addr, uint8_t relay_num)
   Wire.write(cmd);
   Wire.endTransmission();
   
-  if(Wire.requestFrom(relay_addr, 1))
+  if(Wire.requestFrom((int)relay_addr, 1))
   {
      state=Wire.read();
      return state;
@@ -132,7 +132,6 @@ int comioCallback(int id, char *data, int l_data, void *userdata)
 
 int comioCallback2(int id, char *data, int l_data, void *userdata)
 {
-  HFButtonsI2cRelays *buttonsRelays = (HFButtonsI2cRelays *)userdata;
   int16_t state;
   
   if(l_data == 2)
@@ -313,7 +312,7 @@ int HFButtonsI2cRelays::pushButton(uint8_t button_addr, uint8_t button_num)
     }
     else
     {
-      int state = sendCmdToRelay(relay_addr, relay_num, 2);
+      sendCmdToRelay(relay_addr, relay_num, 2);
 
       return 1;
     }
