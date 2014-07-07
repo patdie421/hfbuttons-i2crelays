@@ -227,12 +227,12 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'p')\n",INFO_STR,__func__);
             error++;
         }
-        else
-        {
-           VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message type error\n",INFO_STR,__func__);
-        }
-        return;
      }
+     else
+     {
+        VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message type error\n",INFO_STR,__func__);
+     }
+     return;
    }
    else if(strcmplower(schema_class,"sensor") == 0 &&
            strcmplower(schema_type, "request") == 0)
