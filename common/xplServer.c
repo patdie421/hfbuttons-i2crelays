@@ -129,73 +129,95 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
    
    
    VERBOSE(9) fprintf(stderr,"%s  (%s) : xPL Message to process : %s.%s\n",INFO_STR,__func__, schema_class, schema_type);
-
+   int error=0;
    if(strcmplower(schema_class, control_str) == 0 &&
       strcmplower(schema_type, basic_str) == 0)
    {
       if(!type)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no type\n",INFO_STR,__func__);
-         return;
+         error++;
       }
       if(!device)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
-         return;
+         error++;
       }
       if(!addr)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no addr\n",INFO_STR,__func__);
-         return;
+         error++;
       }
       if(!num)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
-         return;
+         error++;
       }
       
       char *action = xPL_getNamedValue(ListNomsValeursPtr, action_str);
       if(!action)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no action\n",INFO_STR,__func__);
-         return;
+         error++;
       }
-      
+        
       if(!isnumber(addr) || !isnumber(num))
       {
-        printf("numeric error\n");
-      }
-      
-      int iaddr=atoi(addr);
-      int inum=atoi(num);
-      if(iaddr>127 || inum>2)
-      {
-        printf("value error\n");
+        VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message numeric error (addr or num)\n",INFO_STR,__func__);
+        error++;
       }
       
       if(action[1]!=0)
       {
-        printf("value error\n");
+        VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
+        error++;
       }
       action[0]=tolower(action[0]);
       
       // traiter ici la demande
       if(strcmplower(type,relay_str)==0)
       {
+        int iaddr=atoi(addr);
+        int inum=atoi(num);
+        if(iaddr>127 || inum>2)
+        {
+          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message value error (addr or num)\n",INFO_STR,__func__);
+          error++;
+        }
+
         switch(action[0])
         {
            case 's':
            case 'r':
            case 't':
-             printf("OK pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+             printf("OK relais pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
              break;
            default:
-             printf("action error\n");
+             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
+             error++;
              break;
         }
       }
       else if(strcmplower(type,button_str))
       {
+            if(strcmplower(type,relay_str)==0)
+      {
+        int iaddr=atoi(addr);
+        int inum=atoi(num);
+        if(iaddr>63 || inum>2)
+        {
+          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message value error (addr or num)\n",INFO_STR,__func__);
+          error++;
+        }
+
+        switch(action[0])
+        {
+           case 'p':
+             printf("OK bouton pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+             break;
+           default:
+             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'p')\n",INFO_STR,__func__);
+             error++;
       }
       return;
    }
@@ -221,6 +243,11 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
       if(!device)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
+         return;
+      }
+      if(!addr)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no addr\n",INFO_STR,__func__);
          return;
       }
       if(!num)
