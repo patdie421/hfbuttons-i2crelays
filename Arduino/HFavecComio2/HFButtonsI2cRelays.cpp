@@ -78,10 +78,12 @@ int relayGetState(uint8_t relay_addr, uint8_t relay_num)
   Wire.write(cmd);
   Wire.endTransmission();
   
-  Wire.requestFrom(relay_addr, 1);
-  state=Wire.read();
-
-  return state;
+  if(Wire.requestFrom(relay_addr, 1))
+  {
+     state=Wire.read();
+     return state;
+  }
+  return -1;
 }
 
 
@@ -122,8 +124,13 @@ int comioCallback2(int id, char *data, int l_data, void *userdata)
   HFButtonsI2cRelays *buttonsRelays = (HFButtonsI2cRelays *)userdata;
   int16_t state;
   
-  // récupère l'état d'un relais et retourne la réponse
-  
+  if(l_data == 2)
+  {
+     state = relayGetState(data[0], data[1]);
+  }
+  else
+     state=-1;
+
   return state;
 }
 
