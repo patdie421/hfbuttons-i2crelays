@@ -81,6 +81,7 @@ static char *type_str="type";
 static char *current_str="current";
 static char *num_str="num";
 static char *sensor_str="sensor";
+static char *action_str="action";
 
 //
 // Demandes xPL acceptées :
@@ -131,7 +132,7 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
          return;
       }
-      char *action = xPL_getNamedValue(ListNomsValeursPtr, num_str);
+      char *action = xPL_getNamedValue(ListNomsValeursPtr, action_str);
       if(!action)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no action\n",INFO_STR,__func__);
