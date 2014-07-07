@@ -535,9 +535,8 @@ void HFButtonsI2cRelays::begin(SerialLine *l, Comio2 *c)
 {
   hasBegun = true;
 
-  // init com. HF
-  vw_set_rx_pin(DEFAULT_VWRXPIN);
-  vw_setup(DEFAULT_VWSPEED);
+  vw_set_rx_pin(vwRxPin);
+  vw_setup(vwSpeed);
   vw_rx_start();
 
   line = l;
