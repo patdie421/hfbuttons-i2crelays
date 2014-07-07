@@ -198,7 +198,7 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
              }
              break;
            default:
-             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
+             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error\n",INFO_STR,__func__);
              error++;
              break;
         }
