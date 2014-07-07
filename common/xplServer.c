@@ -95,6 +95,27 @@ static char *relay_str="relay";
 static char *button_str="button";
 static char *addr_str="addr";
 
+
+void xplSend(char *device, char *addr, char *num, char *stat)
+{
+   xPL_ServicePtr servicePtr = get_xPL_ServicePtr();
+   if(servicePtr)
+   {
+      xPL_MessagePtr cntrMessageStat = xPL_createBroadcastMessage(servicePtr, xPL_MESSAGE_TRIGGER);
+     
+      xPL_setSchema(cntrMessageStat, sensor_str, basic_str);
+      xPL_setMessageNamedValue(cntrMessageStat, device_str,device);
+      xPL_setMessageNamedValue(cntrMessageStat, type_str, relay_str);
+      xPL_setMessageNamedValue(cntrMessageStat, current_str,stat);
+   
+      // Broadcast the message
+      xPL_sendMessage(cntrMessageStat);
+     
+      xPL_releaseMessage(cntrMessageStat);
+   }
+}
+
+
 //
 // Demandes xPL acceptées :
 //
