@@ -262,9 +262,10 @@ int16_t comio2_atCmdSend(comio2_ad_t *ad,
    cmd_data[i+1]=data[i];
    l_cmd_data=l_data+1;
    
+   int ret;
    pthread_cleanup_push( (void *)pthread_mutex_unlock, (void *)&(ad->write_lock) );
    pthread_mutex_lock(&ad->write_lock);
-   int ret=_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr);
+   ret=_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr);
    pthread_mutex_unlock(&ad->write_lock);
    pthread_cleanup_pop(0);
 
@@ -318,9 +319,10 @@ int16_t comio2_atCmdSendAndWaitResp(comio2_ad_t *ad,
    int16_t frame_data_id=_comio2_get_frame_data_id(ad);
    
    // on envoie la demande
+   int ret;
    pthread_cleanup_push( (void *)pthread_mutex_unlock, (void *)&(ad->write_lock) );
    pthread_mutex_lock(&ad->write_lock);
-   int ret=_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr);
+   ret=_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr);
    pthread_mutex_unlock(&ad->write_lock);
    pthread_cleanup_pop(0);
 
