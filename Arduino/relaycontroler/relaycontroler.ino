@@ -181,19 +181,25 @@ static void twi_callback(uint8_t input_buffer_length,
           {
           case 0: // set
             setRelay(relays, param);
+            output_buffer_length = 1;
+            output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 1: // reset
             resetRelay(relays, param);
+            output_buffer_length = 1;
+            output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 2: // toggle
             toggleRelay(relays, param);
+            output_buffer_length = 1;
+            output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 3: // etat (théorique) du relai
-            input_buffer_length = 1;
+            output_buffer_length = 1;
             output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 13: // type identification
-            input_buffer_length = 1;
+            output_buffer_length = 1;
             output_buffer[0]=TYPE_VERSION;
             break;
           default:
