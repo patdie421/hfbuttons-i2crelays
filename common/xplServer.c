@@ -82,6 +82,8 @@ static char *current_str="current";
 static char *num_str="num";
 static char *sensor_str="sensor";
 static char *action_str="action";
+static char *relay_str="relay";
+static char *button_str="button";
 
 //
 // Demandes xPL acceptées :
@@ -140,6 +142,15 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
       }
       
       // traiter ici la demande
+      if(strcmplower(type,relay_str))
+      {
+        int addr=atoi(device);
+        int id=atoi(num);
+        printf("OK pour %d %d %c\n",addr,id,action[0]);
+      }
+      else if(strcmplower(type,button_str))
+      {
+      }
       return;
    }
    else if(strcmplower(schema_class,"sensor") == 0 &&
