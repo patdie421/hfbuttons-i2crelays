@@ -90,28 +90,32 @@ static char *button_str="button";
 //
 // schema_class = control
 // schema_type = basic
+//    device = <nom>
 //    type = relay|button
-//    device = <adresse i2c du module/relai>
+//    addr = <adresse i2c du module/relai>
 //    num = <numéro du relais>
 //    action = s|r|t (si type = relay => t uniquement)
 // 
 // schema_class = sensor
 // schema_class = request
 //    request = current
+//    device = <nom>
 //    type = relay
-//    device = adresse i2c du module/relai
+//    addr = <adresse i2c du module/relai>
+//    num = <numéro du relais>
 //    num = <numéro du relais>
 //
 void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 {
    xPL_NameValueListPtr ListNomsValeursPtr ;
-   char *schema_type, *schema_class, *device, *type, *num;
+   char *schema_type, *schema_class, *device, *type, *addr, *num;
    schema_class       = xPL_getSchemaClass(theMessage);
    schema_type        = xPL_getSchemaType(theMessage);
    ListNomsValeursPtr = xPL_getMessageBody(theMessage);
    device             = xPL_getNamedValue(ListNomsValeursPtr, device_str);
    type               = xPL_getNamedValue(ListNomsValeursPtr, type_str);
    num                = xPL_getNamedValue(ListNomsValeursPtr, num_str);
+   addr               = xPL_getNamedValue(ListNomsValeursPtr, addr_str);
    
    
    VERBOSE(9) fprintf(stderr,"%s  (%s) : xPL Message to process : %s.%s\n",INFO_STR,__func__, schema_class, schema_type);
@@ -129,11 +133,17 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
          return;
       }
+      if(!addr)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no addr\n",INFO_STR,__func__);
+         return;
+      }
       if(!num)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
          return;
       }
+      
       char *action = xPL_getNamedValue(ListNomsValeursPtr, action_str);
       if(!action)
       {
@@ -141,12 +151,12 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
          return;
       }
       
-      int addr=atoi(device);
-      int id=atoi(num);
+      int iaddr=atoi(addr);
+      int inum=atoi(num);
       // traiter ici la demande
       if(strcmplower(type,relay_str)==0)
       {
-        printf("OK pour %d %d %c\n",addr,id,action[0]);
+        printf("OK pour %s %d %d %c\n",device,iaddr,inum,action[0]);
       }
       else if(strcmplower(type,button_str))
       {
