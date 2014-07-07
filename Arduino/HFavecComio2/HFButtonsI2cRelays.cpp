@@ -123,6 +123,10 @@ int comioCallback(int id, char *data, int l_data, void *userdata)
     default:
       break;
   }
+  if(relay!=-1)
+  {
+    // envoyer un trap ici avec addr, num et flag
+  }
   return flag;
 }
 
