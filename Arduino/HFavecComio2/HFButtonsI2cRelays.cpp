@@ -99,6 +99,17 @@ int comioCallback(int id, char *data, int l_data, void *userdata)
 }
 
 
+int comioCallback2(int id, char *data, int l_data, void *userdata)
+{
+  HFButtonsI2cRelays *buttonsRelays = (HFButtonsI2cRelays *)userdata;
+  int16_t state;
+  
+  // récupère l'état d'un relais et retourne la réponse
+  
+  return state;
+}
+
+
 HFButtonsI2cRelays::HFButtonsI2cRelays()
 {
   vwRxPin = DEFAULT_VWRXPIN;
@@ -547,6 +558,7 @@ void HFButtonsI2cRelays::begin(SerialLine *l, Comio2 *c)
   if(comio)
   {
     comio->setFunction(1, comioCallback);
+    comio->setFunction(2, comioCallback2);
     comio->setUserdata(this);
   }
   
