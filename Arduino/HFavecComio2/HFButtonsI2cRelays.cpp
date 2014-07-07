@@ -68,6 +68,9 @@ int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
   if(Wire.requestFrom(relay_addr, 1))
   {
      state=Wire.read();
+     
+     // ici, envoyer un trap
+     
      return state;
   }
 
@@ -122,10 +125,6 @@ int comioCallback(int id, char *data, int l_data, void *userdata)
       break;
     default:
       break;
-  }
-  if(relay!=-1)
-  {
-    // envoyer un trap ici avec addr, num et flag
   }
   return flag;
 }
@@ -307,11 +306,15 @@ int HFButtonsI2cRelays::pushButton(uint8_t button_addr, uint8_t button_num)
       Serial.print("VIRUAL_RELAY : ");
       Serial.println(relay_num);
 #endif
+
+      // ici, envoyer un trap
+      
       return 1;
     }
     else
     {
-      sendCmdToRelay(relay_addr, relay_num, 2);
+      int state = sendCmdToRelay(relay_addr, relay_num, 2);
+
       return 1;
     }
   }
