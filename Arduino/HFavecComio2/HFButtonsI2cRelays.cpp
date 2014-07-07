@@ -58,12 +58,20 @@ int8_t i2cScan(SerialLine *line)
 
 int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
 {
+  int state=-1; // unknown state
   uint8_t cmd = command << 4;
   cmd = cmd | (relay_num & 0x0F);
   Wire.beginTransmission(relay_addr);
   Wire.write(cmd);
   Wire.endTransmission();
-  return 1;
+  
+  if(Wire.requestFrom(relay_addr, 1))
+  {
+     state=Wire.read();
+     return state;
+  }
+
+  return state;
 }
 
 
