@@ -29,6 +29,26 @@ char *xpl_deviceID=NULL;
 char *xpl_instanceID=NULL;
 
 
+int16_t strcmplower(char *str1, char *str2)
+/**
+ * \brief     comparaison de deux chaines sur la base de "caractères en mimuscules"
+ * \details   chaque caractère des deux chaines est converti en minuscule avant de les comparer
+ * \param     str1   premiere chaine à comparer.
+ * \param     str2   deuxième chaine à comparer.
+ * \return    0 chaines égales, 1 chaines différentes
+ */
+{
+   int i;
+   for(i=0;str1[i];i++) {
+      if(tolower(str1[i])!=tolower(str2[i]))
+         return 1;
+   }
+   if(str1[i]!=str2[i])
+      return 1;
+   return 0;
+}
+
+
 char *set_xPL_vendorID(char *value)
 {
    return string_free_malloc_and_copy(&xpl_vendorID, value, 1);
