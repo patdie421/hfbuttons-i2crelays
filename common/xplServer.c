@@ -84,6 +84,7 @@ static char *sensor_str="sensor";
 static char *action_str="action";
 static char *relay_str="relay";
 static char *button_str="button";
+static char *addr_str="addr";
 
 //
 // Demandes xPL acceptées :
