@@ -182,6 +182,7 @@ int main(int argc, const char * argv[])
       fprintf(stderr, "\n");
       exit(1);
    }
+   
    comio2_setTrap(ad, 1, test_trap, userdata1);
    comio2_setTrap(ad, 2, test_trap, userdata2);
    
@@ -196,8 +197,11 @@ int main(int argc, const char * argv[])
    test3(ad);
    printf("\n");
 
+   for(int i=0; i<120; i++) // attente de 120 secondes pour pouvoir tester xPL
+     sleep(1);
+     
    comio2_close(ad);
-      
+
    return 0;
 }
 
