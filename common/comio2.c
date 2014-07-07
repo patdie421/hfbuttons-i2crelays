@@ -311,7 +311,14 @@ int16_t comio2_atCmdSendAndWaitResp(comio2_ad_t *ad,
    // construction de la trame de la zone data et d'un identifiant de trame "unique"
    int16_t frame_data_id=_comio2_get_frame_data_id(ad);
    
-   if(_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr)==0) // envoie de l'ordre
+   // on envoie la demande
+   pthread_cleanup_push( (void *)pthread_mutex_unlock, (void *)&(ad->write_lock) );
+   pthread_mutex_lock(&ad->write_lock);
+   ret=_comio2_write_frame(ad->fd, frame_data_id, cmd_data, l_cmd_data, &nerr);
+   pthread_mutex_unlock(&ad->write_lock);
+   pthread_cleanup_pop(0);
+
+   if(ret==0) // envoie de l'ordre
    {
       int16_t ret;
       int16_t boucle=COMIO2_NB_RETRY; // 5 tentatives de 1 secondes
@@ -621,11 +628,7 @@ int16_t _comio2_write_frame(int fd, char id, char *cmd_data, uint16_t l_cmd_data
    
    l_frame=_comio2_build_frame(id,frame,cmd_data,l_cmd_data);
    
-   pthread_cleanup_push( (void *)pthread_mutex_unlock, (void *)&(ad->write_lock) );
-   pthread_mutex_lock(&ad->write_lock);
    ret=(int16_t)write(fd,frame,l_frame);
-   pthread_mutex_unlock(&ad->write_lock);
-   pthread_cleanup_pop(0);
 
    free(frame);
    
