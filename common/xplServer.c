@@ -125,7 +125,7 @@ void xplSend(char *device, char *addr, char *num, char *stat)
 //    type = relay|button
 //    addr = <adresse i2c du module/relai>
 //    num = <numéro du relais>
-//    action = s|r|t (si type = relay => t uniquement)
+//    action = s|r|t|p (si type = button, p uniquement, pour les relais s,r et t uniquement)
 // 
 // schema_class = sensor
 // schema_class = request
