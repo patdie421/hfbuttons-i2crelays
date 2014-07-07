@@ -52,7 +52,7 @@ int16_t strcmplower(char *str1, char *str2)
 
 int16_t isnumber(char *str)
 {
-   for(i=O;i<strlen(str);i++)
+   for(int i=0;i<strlen(str);i++)
      if(str[i]<'0' || str[i]>'9')
        return 0;
    return -1;
@@ -168,7 +168,7 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
       
       int iaddr=atoi(addr);
       int inum=atoi(num);
-      if(addr>127 || num>2)
+      if(iaddr>127 || inum>2)
       {
         printf("value error\n");
       }
