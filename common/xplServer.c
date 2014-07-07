@@ -52,10 +52,107 @@ xPL_ServicePtr get_xPL_ServicePtr()
    return xPLService;
 }
 
+static char *request_str="request";
+static char *control_str="control";
+static char *basic_str="basic";
+static char *device_str="device";
+static char *type_str="type";
+static char *current_str="current";
+static char *num="num";
 
+//
+// Demandes xPL acceptées :
+//
+// schema_class = control
+// schema_type = basic
+//    type = relay|button
+//    device = <adresse i2c du module/relai>
+//    num = <numéro du relais>
+//    action = s|r|t (si type = relay => t uniquement)
+// 
+// schema_class = sensor
+// schema_class = request
+//    request = current
+//    type = relay
+//    device = adresse i2c du module/relai
+//    num = <numéro du relais>
+//
 void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 {
-   VERBOSE(9) fprintf(stderr,"%s  (%s) : Reception message xPL\n",INFO_STR,__func__);
+   xPL_NameValueListPtr ListNomsValeursPtr ;
+   char *schema_type, *schema_class, *device, *type, *num;
+   interface_type_001_t *i001=(interface_type_001_t *)userValue;
+   schema_class       = xPL_getSchemaClass(theMessage);
+   schema_type        = xPL_getSchemaType(theMessage);
+   ListNomsValeursPtr = xPL_getMessageBody(theMessage);
+   device             = xPL_getNamedValue(ListNomsValeursPtr, device_str);
+   type               = xPL_getNamedValue(ListNomsValeursPtr, type_str);
+   num                = xPL_getNamedValue(ListNomsValeursPtr, num_str);
+   
+   
+   VERBOSE(9) fprintf(stderr,"%s  (%s) : xPL Message to process : %s.%s\n",INFO_STR,__func__, schema_class, schema_type);
+
+   if(strcmplower(schema_class, control_str) == 0 &&
+      strcmplower(schema_type, basic_str) == 0)
+   {
+      if(!type)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no type\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(!device)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(!num)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
+         return 0;
+      }
+      action             = xPL_getNamedValue(ListNomsValeursPtr, num_str);
+      if(!action)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no action\n",INFO_STR,__func__);
+         return 0;
+      }
+      
+      // traiter ici la demande
+      return;
+   }
+   else if(strcmplower(schema_class,"sensor") == 0 &&
+           strcmplower(schema_type, "request") == 0)
+   {
+      char *request = xPL_getNamedValue(ListNomsValeursPtr, request_str);
+      if(!request)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no request\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(strcmplower(request,current_str)!=0)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message request!=current\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(!type)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no type\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(!device)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
+         return 0;
+      }
+      if(!num)
+      {
+         VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
+         return 0;
+      }
+     
+      // traiter ici la demande
+      return;
+   }
 }
 
 
@@ -73,8 +170,8 @@ void *_xPL_server_thread(void *data)
    // xPL_setHeartbeatInterval(xPLService, 5000); // en milliseconde ?
    // xPL_MESSAGE_ANY, xPL_MESSAGE_COMMAND, xPL_MESSAGE_STATUS, xPL_MESSAGE_TRIGGER
    
-   xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, "control", "basic", (xPL_ObjectPtr)data) ;
-   xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, "sensor", "request", (xPL_ObjectPtr)data) ;
+   xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, control_str, basic_str, (xPL_ObjectPtr)data) ;
+   xPL_addServiceListener(xPLService, cmndMsgHandler, xPL_MESSAGE_COMMAND, sensor_str, request_str, (xPL_ObjectPtr)data) ;
    
    xPL_setServiceEnabled(xPLService, TRUE); 
 
