@@ -58,7 +58,8 @@ static char *basic_str="basic";
 static char *device_str="device";
 static char *type_str="type";
 static char *current_str="current";
-static char *num="num";
+static char *num_str="num";
+static char *sensor_str="sensor";
 
 //
 // Demandes xPL acceptées :
@@ -81,7 +82,6 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
 {
    xPL_NameValueListPtr ListNomsValeursPtr ;
    char *schema_type, *schema_class, *device, *type, *num;
-   interface_type_001_t *i001=(interface_type_001_t *)userValue;
    schema_class       = xPL_getSchemaClass(theMessage);
    schema_type        = xPL_getSchemaType(theMessage);
    ListNomsValeursPtr = xPL_getMessageBody(theMessage);
@@ -98,23 +98,23 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
       if(!type)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no type\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(!device)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(!num)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
-      action             = xPL_getNamedValue(ListNomsValeursPtr, num_str);
+      char *action = xPL_getNamedValue(ListNomsValeursPtr, num_str);
       if(!action)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no action\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       
       // traiter ici la demande
@@ -127,27 +127,27 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
       if(!request)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no request\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(strcmplower(request,current_str)!=0)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message request!=current\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(!type)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no type\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(!device)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no device\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
       if(!num)
       {
          VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message no num\n",INFO_STR,__func__);
-         return 0;
+         return;
       }
      
       // traiter ici la demande
