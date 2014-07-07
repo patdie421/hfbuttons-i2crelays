@@ -141,11 +141,11 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
          return;
       }
       
+      int addr=atoi(device);
+      int id=atoi(num);
       // traiter ici la demande
-      if(strcmplower(type,relay_str))
+      if(strcmplower(type,relay_str)==0)
       {
-        int addr=atoi(device);
-        int id=atoi(num);
         printf("OK pour %d %d %c\n",addr,id,action[0]);
       }
       else if(strcmplower(type,button_str))
