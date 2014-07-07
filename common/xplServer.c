@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h>
 #include <pthread.h>
 
 #include "xPL.h"
