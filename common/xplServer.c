@@ -190,7 +190,13 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
            case 's':
            case 'r':
            case 't':
-             printf("OK relais pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+             if(!error)
+                printf("OK relais pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+             else
+             {
+                VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message can't process\n",INFO_STR,__func__);
+             }
+
              break;
            default:
              VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
@@ -199,8 +205,6 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
         }
       }
       else if(strcmplower(type,button_str))
-      {
-            if(strcmplower(type,relay_str)==0)
       {
         int iaddr=atoi(addr);
         int inum=atoi(num);
@@ -212,14 +216,15 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
 
         switch(action[0])
         {
-           case 'p':
-             printf("OK bouton pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
-             break;
-           default:
-             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'p')\n",INFO_STR,__func__);
-             error++;
-      }
-      return;
+          case 'p':
+            printf("OK bouton pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+            break;
+          default:
+            VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'p')\n",INFO_STR,__func__);
+            error++;
+        }
+        return;
+     }
    }
    else if(strcmplower(schema_class,"sensor") == 0 &&
            strcmplower(schema_type, "request") == 0)
