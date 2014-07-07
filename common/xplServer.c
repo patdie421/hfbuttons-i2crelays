@@ -196,7 +196,6 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
              {
                 VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message can't process\n",INFO_STR,__func__);
              }
-
              break;
            default:
              VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
@@ -204,7 +203,7 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
              break;
         }
       }
-      else if(strcmplower(type,button_str))
+      else if(strcmplower(type,button_str)==0)
       {
         int iaddr=atoi(addr);
         int inum=atoi(num);
@@ -217,11 +216,20 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
         switch(action[0])
         {
           case 'p':
-            printf("OK bouton pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+            if(!error)
+              printf("OK bouton pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+            else
+            {
+                VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message can't process\n",INFO_STR,__func__);
+            }
             break;
           default:
             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'p')\n",INFO_STR,__func__);
             error++;
+        }
+        else
+        {
+           VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message type error\n",INFO_STR,__func__);
         }
         return;
      }
