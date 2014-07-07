@@ -163,7 +163,10 @@ int16_t comio2_init(comio2_ad_t *ad, char *dev, speed_t speed)
    pthread_cond_init(&ad->sync_cond, NULL);
    pthread_mutex_init(&ad->sync_lock, NULL);
    
-   // verrou de section critique interne
+   // verrou de mutex écriture vers mcu
+   pthread_mutex_init(&ad->write_lock, NULL);
+
+// verrou de section critique interne
    pthread_mutex_init(&ad->ad_lock, NULL);
    
    ad->queue=(queue_t *)malloc(sizeof(queue_t));
@@ -618,8 +621,12 @@ int16_t _comio2_write_frame(int fd, char id, char *cmd_data, uint16_t l_cmd_data
    
    l_frame=_comio2_build_frame(id,frame,cmd_data,l_cmd_data);
    
+   pthread_cleanup_push( (void *)pthread_mutex_unlock, (void *)&(ad->write_lock) );
+   pthread_mutex_lock(&ad->write_lock);
    ret=(int16_t)write(fd,frame,l_frame);
-   
+   pthread_mutex_unlock(&ad->write_lock);
+   pthread_cleanup_pop(0);
+
    free(frame);
    
    if(ret<0)
