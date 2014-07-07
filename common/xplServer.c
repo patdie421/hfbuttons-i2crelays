@@ -50,6 +50,15 @@ int16_t strcmplower(char *str1, char *str2)
 }
 
 
+int16_t isnumber(char *str)
+{
+   for(i=O;i<strlen(str);i++)
+     if(str[i]<'0' || str[i]>'9')
+       return 0;
+   return -1;
+}
+
+
 char *set_xPL_vendorID(char *value)
 {
    return string_free_malloc_and_copy(&xpl_vendorID, value, 1);
@@ -152,12 +161,38 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
          return;
       }
       
+      if(!isnumber(addr) || !isnumber(num))
+      {
+        printf("numeric error\n");
+      }
+      
       int iaddr=atoi(addr);
       int inum=atoi(num);
+      if(addr>127 || num>2)
+      {
+        printf("value error\n");
+      }
+      
+      if(action[1]!=0)
+      {
+        printf("value error\n");
+      }
+      action[0]=tolower(action[0]);
+      
       // traiter ici la demande
       if(strcmplower(type,relay_str)==0)
       {
-        printf("OK pour %s %d %d %c\n",device,iaddr,inum,action[0]);
+        switch(action[0])
+        {
+           case 's':
+           case 'r':
+           case 't':
+             printf("OK pour %s : %d %d %c\n",device,iaddr,inum,action[0]);
+             break;
+           default:
+             printf("action error\n");
+             break;
+        }
       }
       else if(strcmplower(type,button_str))
       {
