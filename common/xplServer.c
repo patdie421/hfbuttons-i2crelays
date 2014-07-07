@@ -95,6 +95,27 @@ static char *relay_str="relay";
 static char *button_str="button";
 static char *addr_str="addr";
 
+
+void xplSend(char *device, char *addr, char *num, char *stat)
+{
+   xPL_ServicePtr servicePtr = get_xPL_ServicePtr();
+   if(servicePtr)
+   {
+      xPL_MessagePtr cntrMessageStat = xPL_createBroadcastMessage(servicePtr, xPL_MESSAGE_TRIGGER);
+     
+      xPL_setSchema(cntrMessageStat, sensor_str, basic_str);
+      xPL_setMessageNamedValue(cntrMessageStat, device_str,device);
+      xPL_setMessageNamedValue(cntrMessageStat, type_str, relay_str);
+      xPL_setMessageNamedValue(cntrMessageStat, current_str,stat);
+   
+      // Broadcast the message
+      xPL_sendMessage(cntrMessageStat);
+     
+      xPL_releaseMessage(cntrMessageStat);
+   }
+}
+
+
 //
 // Demandes xPL acceptées :
 //
@@ -104,7 +125,7 @@ static char *addr_str="addr";
 //    type = relay|button
 //    addr = <adresse i2c du module/relai>
 //    num = <numéro du relais>
-//    action = s|r|t (si type = relay => t uniquement)
+//    action = s|r|t|p (si type = button, p uniquement, pour les relais s,r et t uniquement)
 // 
 // schema_class = sensor
 // schema_class = request
@@ -198,7 +219,7 @@ void cmndMsgHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_Ob
              }
              break;
            default:
-             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error (must be :'s', 'r' or 't')\n",INFO_STR,__func__);
+             VERBOSE(5) fprintf(stderr,"%s  (%s) : xPL message action error\n",INFO_STR,__func__);
              error++;
              break;
         }

@@ -66,6 +66,18 @@ int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
   return 1;
 }
 
+int relayGetState(uint8_t relay_addr, uint8_t relay_num)
+{
+  int state=0;
+/*  
+  uint8_t cmd = command << 4;
+  cmd = cmd | (relay_num & 0x0F);
+  Wire.beginTransmission(relay_addr);
+  Wire.write(cmd);
+  Wire.endTransmission();
+*/
+  return state;
+}
 
 int comioCallback(int id, char *data, int l_data, void *userdata)
 {
@@ -96,6 +108,17 @@ int comioCallback(int id, char *data, int l_data, void *userdata)
       break;
   }
   return flag;
+}
+
+
+int comioCallback2(int id, char *data, int l_data, void *userdata)
+{
+  HFButtonsI2cRelays *buttonsRelays = (HFButtonsI2cRelays *)userdata;
+  int16_t state;
+  
+  // récupère l'état d'un relais et retourne la réponse
+  
+  return state;
 }
 
 
@@ -535,9 +558,8 @@ void HFButtonsI2cRelays::begin(SerialLine *l, Comio2 *c)
 {
   hasBegun = true;
 
-  // init com. HF
-  vw_set_rx_pin(DEFAULT_VWRXPIN);
-  vw_setup(DEFAULT_VWSPEED);
+  vw_set_rx_pin(vwRxPin);
+  vw_setup(vwSpeed);
   vw_rx_start();
 
   line = l;
@@ -548,6 +570,7 @@ void HFButtonsI2cRelays::begin(SerialLine *l, Comio2 *c)
   if(comio)
   {
     comio->setFunction(1, comioCallback);
+    comio->setFunction(2, comioCallback2);
     comio->setUserdata(this);
   }
   
