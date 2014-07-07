@@ -54,6 +54,7 @@ typedef struct comio2_ad_s
    pthread_t       read_thread;
    pthread_cond_t  sync_cond;
    pthread_mutex_t sync_lock;
+   pthread_mutex_t write_lock;
    pthread_mutex_t ad_lock;
    char            serial_dev_name[255];
    speed_t         speed;
