@@ -66,6 +66,18 @@ int sendCmdToRelay(uint8_t relay_addr, uint8_t relay_num, uint8_t command)
   return 1;
 }
 
+int relayGetState(uint8_t relay_addr, uint8_t relay_num)
+{
+  int state=0;
+/*  
+  uint8_t cmd = command << 4;
+  cmd = cmd | (relay_num & 0x0F);
+  Wire.beginTransmission(relay_addr);
+  Wire.write(cmd);
+  Wire.endTransmission();
+*/
+  return state;
+}
 
 int comioCallback(int id, char *data, int l_data, void *userdata)
 {
