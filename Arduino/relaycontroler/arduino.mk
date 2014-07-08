@@ -1,4 +1,20 @@
-# fichier mis à jour pour compilation YUN (arduino 1.5x)
+# fichier mis à jour pour compilation YUN (arduino 1.5x) et pour la prise en compte
+# de la compilation des sketchs pour Attiny (après installation des lib qui vont
+# bien).
+#
+# Utilisation :
+#   Definir 4 variables (environnement Linux ou passage au Makefile)
+#   ARDUINODIR : répertoire où est installé le logiciel Arduino 1.5.x
+#   HARDWARE : type de hardware (arduino par defaut, tiny pour attinyxx)
+#   MCUFAMILY : nom de la famille du microcontroleur (avr par defaut ou sam (pour due))
+#   BOARD : nom de la carte microcontroleur à programmer (voir dans boards.txt)
+#   lire la doc d'origine pour les autres paramètres possibles
+#
+# make -f arduino.mk ARDUINODIR=/opt/arduino15 BOARD=uno
+# make -f arduino.mk ARDUINODIR=/opt/arduino15 MCUFAMILY=avr HARDWARE=arduino BOARD=uno
+# make -f arduino.mk ARDUINODIR=/opt/arduino15 MCUFAMILY=avr HARDWARE=tiny BOARD=attiny84at8
+# make -f arduino.mk ARDUINODIR=/opt/arduino15 HARDWARE=tiny BOARD=attiny84at8
+#
 #_______________________________________________________________________________
 #
 #                         edam's Arduino makefile
@@ -107,6 +123,7 @@
 #              board types.
 #
 # HARDWARE     Specify hardware type (default = arduino) (Patrice Dietsch)
+#
 # MCUFAMILY    Specify the MCU family (avr/sam) (Patrice Dietsch)
 #
 # CPPFLAGS     Specify any additional flags for the compiler.  The usual flags,
@@ -167,6 +184,10 @@ ifndef HARDWARE
 HARDWARE=arduino
 endif
 
+ifndef MCUFAMILY
+MCUFAMILY=avr
+endif
+
 # default arduino software directory, check software exists
 ifndef ARDUINODIR
 ARDUINODIR := $(firstword $(wildcard ~/opt/arduino /usr/share/arduino \
@@ -202,10 +223,6 @@ ifneq "$(MAKECMDGOALS)" "clean"
 $(error BOARD is unset.  Type 'make boards' to see possible values)
 endif
 endif
-endif
-
-ifndef MCUFAMILY
-$(error MCUFAMILY is unset.  possible values are : avr | sam)
 endif
 
 # obtain board parameters from the arduino boards.txt file
