@@ -1,7 +1,8 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
+#include <avr/eeprom.h>
 #include <util/delay.h>
-#include <EEPROM.h>
+// #include <EEPROM.h>
 #include "usitwislave.h"
 
 #define EEPROM_ADDR 0 // adresse EEPROM où est stockée l'adresse i2c du module
@@ -181,25 +182,25 @@ static void twi_callback(uint8_t input_buffer_length,
           {
           case 0: // set
             setRelay(relays, param);
-            output_buffer_length = 1;
+            *output_buffer_length = 1;
             output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 1: // reset
             resetRelay(relays, param);
-            output_buffer_length = 1;
+            *output_buffer_length = 1;
             output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 2: // toggle
             toggleRelay(relays, param);
-            output_buffer_length = 1;
+            *output_buffer_length = 1;
             output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 3: // etat (théorique) du relai
-            output_buffer_length = 1;
+            *output_buffer_length = 1;
             output_buffer[0]=relays[param][RELAYS_STAT_IDX];
             break;
           case 13: // type identification
-            output_buffer_length = 1;
+            *output_buffer_length = 1;
             output_buffer[0]=TYPE_VERSION;
             break;
           default:
@@ -217,7 +218,8 @@ static void twi_callback(uint8_t input_buffer_length,
         if((input_buffer[1] > 0) && (input_buffer[1] < 128) && input_buffer[1] != I2C_INIT_ADDR) // avec une adresse valide ?
         {
           i2c_addr=input_buffer[1];
-          EEPROM.write(EEPROM_ADDR, i2c_addr); // ecriture de l'adresse dans l'EEPROM
+          // EEPROM.write(EEPROM_ADDR, i2c_addr); // ecriture de l'adresse dans l'EEPROM
+          eeprom_write_byte(EEPROM_ADDR, i2c_addr); // ecriture de l'adresse dans l'EEPROM
           _delay_ms(2000); // on attend 2 secondes
           usi_twi_slave_stop(); // on demande l'arrêt de la boucle twi_slave pour pouvoir prendre en compte la nouvelle adresse
         }
@@ -239,7 +241,8 @@ void setup()
   DDRB &= ~(1 << PB1); // jumper de configuration (entrée)
 
  // lecture de l'adresse I2C en EEPROM
-  byte eeprom_addr = EEPROM.read(EEPROM_ADDR);
+  // byte eeprom_addr = EEPROM.read(EEPROM_ADDR);
+  byte eeprom_addr = eeprom_read_byte(EEPROM_ADDR);
 
   if( (eeprom_addr<=10) || (eeprom_addr>127) || (PINB & (1 << PB1)) )
     i2c_addr = I2C_INIT_ADDR;

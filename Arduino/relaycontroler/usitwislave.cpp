@@ -7,7 +7,7 @@
 #include "usitwislave_devices.h"
 #include "usitwislave.h"
 
-enum
+enum overflow_state_e
 {
   of_state_check_address,
   of_state_send_data,
@@ -18,7 +18,7 @@ enum
 } 
 overflow_state_t;
 
-enum
+enum startstop_state_e
 {
   ss_state_before_start,
   ss_state_after_start,
