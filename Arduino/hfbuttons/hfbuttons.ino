@@ -109,7 +109,7 @@ static void twi_callback(uint8_t input_buffer_length,
 
 void init_net_and_addr()
 {
-    usi_twi_slave(I2C_INIT_ADDR, 0, twi_callback, idle_callback);
+  usi_twi_slave(I2C_INIT_ADDR, 0, twi_callback, idle_callback);
 }
 
 
