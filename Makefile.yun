@@ -3,6 +3,8 @@ SHELL = /bin/bash
 TECHNO=openwrt
 ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
+RELAYCONTROLERSKETCH=relaycontroler.hex
+RELAYCONTROLERSKETCHDIR=Arduino/relaycontroler
 EXECUTABLE=hfbuttons-i2crelays
 YUNHOST = 192.168.0.253
 YUNUSER = root
@@ -21,9 +23,10 @@ all:
 	cd $(XPLLIBDIR) ; make
 	cd $(XPLLIBDIR)/examples ; make
 	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
-	cd $(ARDUINOSKETCHDIR) ; make
+	cd $(ARDUINOSKETCHDIR) ; make BOARD=yun HARDWARE=arduino
+	cd $(RELAYCONTROLERSKETCHDIR) ; make BOARD=attiny84at8 HARDWARE=tiny
 
-clean: cleancommon cleanxpllib cleanarduino
+clean: cleancommon cleanxpllib cleanarduino cleanrelaycontroler
 
 cleanxpllib:
 	cd $(XPLLIBDIR) ; make clean
@@ -34,8 +37,10 @@ cleancommon:
 	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
 
 cleanarduino:
-	rm -f $(ARDUINOSKETCH)
 	cd $(ARDUINOSKETCHDIR) ; make clean
+
+cleanrelaycontroler:
+	cd $(RELAYCONTROLERSKETCHDIR) ; make clean
 
 installserver: all
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
