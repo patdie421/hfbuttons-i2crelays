@@ -5,6 +5,8 @@ ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
 RELAYCONTROLERSKETCH=relaycontroler.hex
 RELAYCONTROLERSKETCHDIR=Arduino/relaycontroler
+HFBUTTONSSKETCH=hfbuttons.hex
+HFBUTTONSSKETCHDIR=Arduino/hfbuttons
 EXECUTABLE=hfbuttons-i2crelays
 YUNHOST = 192.168.0.253
 YUNUSER = root
@@ -24,9 +26,10 @@ all:
 	cd $(XPLLIBDIR)/examples ; make
 	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 	cd $(ARDUINOSKETCHDIR) ; make BOARD=yun HARDWARE=arduino
-	cd $(RELAYCONTROLERSKETCHDIR) ; make BOARD=attiny84at8 HARDWARE=tiny
+	cd $(RELAYCONTROLERSKETCHDIR) ; make BOARD=attiny84at1 HARDWARE=tiny
+	cd $(HFBUTTONSSKETCHDIR) ; make BOARD=attiny85at8 HARDWARE=tiny
 
-clean: cleancommon cleanxpllib cleanarduino cleanrelaycontroler
+clean: cleancommon cleanxpllib cleanarduino cleanrelaycontroler cleanhfbuttons
 
 cleanxpllib:
 	cd $(XPLLIBDIR) ; make clean
@@ -41,6 +44,9 @@ cleanarduino:
 
 cleanrelaycontroler:
 	cd $(RELAYCONTROLERSKETCHDIR) ; make clean
+
+cleanhfbuttons:
+	cd $(HFBUTTONSSKETCHDIR) ; make clean
 
 installserver: all
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
