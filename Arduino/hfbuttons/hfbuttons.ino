@@ -6,8 +6,8 @@
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <VirtualWire.h>
-#include "usitwislave.h"
-#include "BlinkLeds.h"
+#include <BlinkLeds.h>
+#include <usitwislave.h>
 
 
 // Rappel : Brochage ATMEL ATTINY45/85 - ARDUINO

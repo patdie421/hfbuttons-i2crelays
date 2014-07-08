@@ -3,7 +3,7 @@
 #include <avr/eeprom.h>
 #include <util/delay.h>
 // #include <EEPROM.h>
-#include "usitwislave.h"
+#include <usitwislave.h>
 
 #define EEPROM_ADDR 0 // adresse EEPROM où est stockée l'adresse i2c du module
 #define I2C_INIT_ADDR 10
