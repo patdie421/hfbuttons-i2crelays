@@ -2,7 +2,7 @@
 #include <EEPROM.h>
 #include <Wire.h>
 #include <VirtualWire.h>
-#include "BlinkLeds.h"
+#include <BlinkLeds.h>
 #include "comio2.h"
 #include "HFButtonsI2cRelays.h"
 
