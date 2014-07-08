@@ -1,23 +1,27 @@
 SHELL = /bin/bash
 
 TECHNO=openwrt
+
+COMMON=common
+EXECUTABLE=hfbuttons-i2crelays
+
 ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
 RELAYCONTROLERSKETCH=relaycontroler.hex
 RELAYCONTROLERSKETCHDIR=Arduino/relaycontroler
 HFBUTTONSSKETCH=hfbuttons.hex
 HFBUTTONSSKETCHDIR=Arduino/hfbuttons
-EXECUTABLE=hfbuttons-i2crelays
+
+XPLLIB=xPL.a
+XPLLIBDIR=$(TECHNO)/xPLLib
+
 YUNHOST = 192.168.0.253
 YUNUSER = root
 YUNDIR = .
-XPLLIB=xPL.a
-XPLLIBDIR=$(TECHNO)/xPLLib
-COMMON=common
-
 # voir :
 # http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
 # pour la mise en place des cles ssh
+
 
 CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc 
 
@@ -28,6 +32,7 @@ all:
 	cd $(ARDUINOSKETCHDIR) ; make BOARD=yun HARDWARE=arduino
 	cd $(RELAYCONTROLERSKETCHDIR) ; make BOARD=attiny84at1 HARDWARE=tiny
 	cd $(HFBUTTONSSKETCHDIR) ; make BOARD=attiny85at8 HARDWARE=tiny
+
 
 clean: cleancommon cleanxpllib cleanarduino cleanrelaycontroler cleanhfbuttons
 
@@ -48,6 +53,7 @@ cleanrelaycontroler:
 cleanhfbuttons:
 	cd $(HFBUTTONSSKETCHDIR) ; make clean
 
+
 installserver: all
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
 
@@ -57,8 +63,9 @@ installsketch: all
 execserver:
 	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
 
+
 getfromgit: clean
 	git pull
 
 buildfromgit: getfromgit all
-	
+
