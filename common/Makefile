@@ -13,14 +13,19 @@ CC = gcc
 endif
 
 SHELL = /bin/bash
+
 XPLLIB=$(TECHNO)_xPL.a
+ifeq "$(TECHNO)" "macosx"
+XPLLIBDIR=../$(TECHNO)/xPLLib
+else
 XPLLIBDIR=../libraries/xPLLib
+endif
 
 DEBUGFLAGS  = -D__DEBUG_ON__
 
 CFLAGS      = -std=c99 \
               -O2 \
-              -I ../$(TECHNO)/xPLLib \
+              -I $(XPLLIBDIR) \
               $(DEBUGFLAGS)
 
 LDFLAGS     = -lpthread 

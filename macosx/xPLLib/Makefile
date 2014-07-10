@@ -1,72 +1,52 @@
 #
 # Makefile for xPL4Linux's xPLLib
 #
+TECHNO=macosx
 
 #
-# For LINUX, use the following
-CCOPTS = -O2 -D__DARWIN_UNIX03 -pedantic -Wall -g
+# For all LINUXs, use the following
+CCOPTS = -O2 -DLINUX -pedantic -Wall -g
 LIBS = -lm
-LIBDIR = /usr/local/lib
-INCDIR = /usr/local/include
-
-# For UnixWare systems, use the following
-# CCOPTS = -O2 -DUNIXWARE
-# LIBS = -lnsl -lsocket -lm
-
 #
-# For Alpha/DEC OSF/Tru64
-#
-# CCOPTS = -O2 -DTRU64
-# LIBS = -lm
-
-CCOPTS = -std=c99
-#	 -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include/
+# For Openwrt linux crosscompilation
+ifeq "$(TECHNO)" "openwrt"
+OPENWRTSDKTOOLCHAIN_DIR=$(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2
+CC=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-gcc $(CCOPTS)
+LD=$(OPENWRTSDKTOOLCHAIN_DIR)/bin/mips-openwrt-linux-uclibc-gcc $(LDOPTS)
+else
+CC = gcc $(CCOPTS)
+LD = gcc $(LDOPTS)
+endif
 
 # *******************************************************
 # ******* No more customizations from here down *********
 # *******************************************************
+LDOPTS	= -O2
+LIBCC=$(CC) -fPIC
 
-LDOPTS	= -O
-CC	=	gcc $(CCOPTS)
-LIBCC	=	$(CC)
-LD	= 	gcc $(LDOPTS)
+SOURCES = xPL-io.c xPL-utils.c xPL-service.c xPL-message.c xPL-listeners.c xPL-store.c xPL-config.c xPL-hub.c
+OBJECTS=$(addprefix $(TECHNO).objects/, $(SOURCES:.c=.o))
+XPLLIB=$(TECHNO)_xPL.a
 
-INCLUDES = xPL.h xPL_priv.h
-LIB_OBJS = xPL-io.o xPL-utils.o xPL-service.o xPL-message.o xPL-listeners.o xPL-store.o xPL-config.o xPL-hub.o
+all:	.depdir $(TECHNO).objects xPLLib
 
-all:	xPLLib
+$(TECHNO).objects:
+	@mkdir -p $(TECHNO).objects
 
-xPLLib: $(LIB_OBJS) xPL.a
+.depdir:
+	@mkdir -p .deps
 
-xPL.a: $(LIB_OBJS)
-	@echo "Creating xPL.a..."
-	@rm -f xPL.a
-	@ar q xPL.a $(LIB_OBJS)
+xPLLib: $(OBJECTS) $(XPLLIB)
 
-xPL-utils.o: $(INCLUDES) xPL-utils.c
-	$(LIBCC) -c xPL-utils.c
+$(TECHNO).objects/%.o: %.c
+	@$(CC) -c -MM -MT $(TECHNO).objects/$*.o $*.c > .deps/$*.dep
+	$(LIBCC) -c $*.c -o $(TECHNO).objects/$*.o 
 
-xPL-config.o: $(INCLUDES) xPL-config.c
-	$(LIBCC) -c xPL-config.c
-
-xPL-io.o:	$(INCLUDES) xPL-io.c
-	$(LIBCC) -c xPL-io.c
-
-xPL-service.o:	$(INCLUDES) xPL-service.c
-	$(LIBCC) -c xPL-service.c
-
-xPL-message.o:	$(INCLUDES) xPL-message.c
-	$(LIBCC) -c xPL-message.c
-
-xPL-listeners.o:	$(INCLUDES) xPL-listeners.c
-	$(LIBCC) -c xPL-listeners.c
-
-xPL-store.o:	$(INCLUDES) xPL-store.c
-	$(LIBCC) -c xPL-store.c
-
-xPL-hub.o:	$(INCLUDES) xPL-hub.c
-	$(LIBCC) -c xPL-hub.c
-
+$(XPLLIB): $(OBJECTS)
+	@rm -f $(XPLLIB)
+	@ar q $(XPLLIB) $(OBJECTS)
 
 clean:
-	-rm -f *.o *.a *.dylib core
+	-rm -f $(TECHNO).objects/*.o $(XPLLIB) core
+
+-include .deps/*.dep
