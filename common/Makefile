@@ -13,8 +13,8 @@ CC = gcc
 endif
 
 SHELL = /bin/bash
-XPLLIB=xPL.a
-XPLLIBDIR=../$(TECHNO)/xPLLib
+XPLLIB=$(TECHNO)_xPL.a
+XPLLIBDIR=../libraries/xPLLib
 
 DEBUGFLAGS  = -D__DEBUG_ON__
 

@@ -12,8 +12,8 @@ RELAYCONTROLERSKETCHDIR=Arduino/relaycontroler
 HFBUTTONSSKETCH=hfbuttons.hex
 HFBUTTONSSKETCHDIR=Arduino/hfbuttons
 
-XPLLIB=xPL.a
-XPLLIBDIR=$(TECHNO)/xPLLib
+XPLLIB=$(TECHNO)_xPL.a
+XPLLIBDIR=libraries/xPLLib
 
 YUNHOST = 192.168.0.253
 YUNUSER = root
@@ -26,8 +26,8 @@ YUNDIR = .
 CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc 
 
 all:
-	cd $(XPLLIBDIR) ; make
-	cd $(XPLLIBDIR)/examples ; make
+	cd $(XPLLIBDIR) ; make TECHNO=$(TECHNO)
+	cd $(XPLLIBDIR)/examples ; make TECHNO=$(TECHNO)
 	cd $(COMMON) ; make EXECUTABLE=$(EXECUTABLE) TECHNO=$(TECHNO) CC=$(CC)
 	cd $(ARDUINOSKETCHDIR) ; make BOARD=yun HARDWARE=arduino
 	cd $(RELAYCONTROLERSKETCHDIR) ; make BOARD=attiny84at1 HARDWARE=tiny
@@ -37,8 +37,8 @@ all:
 clean: cleancommon cleanxpllib cleanarduino cleanrelaycontroler cleanhfbuttons
 
 cleanxpllib:
-	cd $(XPLLIBDIR) ; make clean
-	cd $(XPLLIBDIR)/examples ; make clean
+	cd $(XPLLIBDIR) ; make TECHNO=$(TECHNO) clean
+	cd $(XPLLIBDIR)/examples ; make TECHNO=$(TECHNO) clean
 	 
 cleancommon:
 	rm -f $(YUNINSTALLFLAG)
@@ -68,4 +68,3 @@ getfromgit: clean
 	git pull
 
 buildfromgit: getfromgit all
-
