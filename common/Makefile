@@ -2,32 +2,19 @@ ifndef TECHNO
 $(error - TECHNO is unset, set it : to openwrt, linux or macosx)
 endif
 
-ifndef EXECUTABLE
-EXECUTABLE=hfbuttons-i2crelays
-endif
+-include ../env.mk
 
-ifeq "$(TECHNO)" "openwrt"
-CC = $(STAGING_DIR)/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc
-else
-CC = gcc
+ifndef EXECUTABLE
+$(error - EXECUTABLE is unset)
 endif
 
 SHELL = /bin/bash
 
-XPLLIB=$(TECHNO)_xPL.a
-ifeq "$(TECHNO)" "macosx"
-XPLLIBDIR=../$(TECHNO)/xPLLib
-else
-XPLLIBDIR=../libraries/xPLLib
-endif
-
 DEBUGFLAGS  = -D__DEBUG_ON__
-
 CFLAGS      = -std=c99 \
               -O2 \
-              -I $(XPLLIBDIR) \
+              -I ../$(XPLLIBDIR) \
               $(DEBUGFLAGS)
-
 LDFLAGS     = -lpthread 
 
 SOURCES=$(shell echo *.c)
@@ -45,8 +32,8 @@ all: .depdir $(TECHNO).objects ../$(TECHNO)/$(EXECUTABLE)
 $(TECHNO).objects:
 	@mkdir -p $(TECHNO).objects
 
-../$(TECHNO)/$(EXECUTABLE): $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB)
-	$(CC) $(OBJECTS) $(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
+../$(TECHNO)/$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(OBJECTS) ../$(XPLLIBDIR)/$(XPLLIB) $(LDFLAGS) -o $@
 
 clean:
 	rm -f $(TECHNO).objects/*.o ../$(TECHNO)/$(EXECUTABLE) .deps/*.dep
