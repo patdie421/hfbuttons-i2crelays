@@ -3,7 +3,7 @@ SHELL = /bin/bash
 TECHNO=openwrt
 
 COMMON=common
-EXECUTABLE=hfbuttons-i2crelays
+EXECUTABLE=mea-relaysbox-$(TECHNO)
 
 ARDUINOSKETCH=HFavecComio2.hex
 ARDUINOSKETCHDIR=Arduino/HFavecComio2
@@ -42,7 +42,7 @@ cleanxpllib:
 	 
 cleancommon:
 	rm -f $(YUNINSTALLFLAG)
-	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
+	cd $(COMMON) ; make TECHNO=$(TECHNO) EXECUTABLE=$(EXECUTABLE) clean
 
 cleanarduino:
 	cd $(ARDUINOSKETCHDIR) ; make clean

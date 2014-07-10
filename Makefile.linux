@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 
 TECHNO=linux
-EXECUTABLE=hfbuttons-i2crelays
+EXECUTABLE=mea-relaysbox-$(TECHNO)
 XPLLIB=$(TECHNO)_xPL.a
 XPLLIBDIR=libraries/xPLLib
 COMMON=common
@@ -18,4 +18,4 @@ clean: cleancommon
 	cd $(XPLLIBDIR)/examples ; make TECHNO=$(TECHNO) clean
  
 cleancommon:
-	cd $(COMMON) ; make TECHNO=$(TECHNO) clean
+	cd $(COMMON) ; make TECHNO=$(TECHNO) EXECUTABLE=$(EXECUTABLE) clean
