@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-TECHNO=openwrt
+#TECHNO=openwrt
 
 -include env.mk
 
@@ -20,10 +20,10 @@ endif
 
 ifeq "$(TECHNO)" "openwrt"
 installserver: all
-	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSER)@$(YUNHOST):$(YUNDIR)
+	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSERNAME)@$(YUNHOSTNAME):$(YUNINSTALLDIR)
 
 execserver:
-	ssh $(YUNUSER)@$(YUNHOST) $(YUNDIR)/$(EXECUTABLE)
+	ssh $(YUNUSERNAME)@$(YUNHOSTNAME) $(YUNINSTALLDIR)/$(EXECUTABLE)
 endif
 
 clean: cleancommon cleanxpllib cleanmcu
@@ -49,7 +49,7 @@ cleanhfbuttons:
 	cd $(HFBUTTONSSKETCHDIR) ; make clean
 
 installsketch: all
-	scp $(ARDUINOSKETCH).hex $(YUNUSER)@$(YUNHOST):$(YUNDIR) ; ssh $(YUNUSER)@$(YUNHOST) run-avrdude $(ARDUINOSKETCH).hex
+	scp $(ARDUINOSKETCH).hex $(YUNUSERNAME)@$(YUNHOSTNAME):$(YUNINSTALLDIR) ; ssh $(YUNUSERNAME)@$(YUNHOSTNAME) run-avrdude $(YUNINSTALLDIR)/$(ARDUINOSKETCHNAME).hex
 else
 cleanmcu:
 	@echo ""

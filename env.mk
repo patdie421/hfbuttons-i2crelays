@@ -1,4 +1,6 @@
 # pour quelle cible
+-include techno.mk
+
 ifndef TECHNO
 TECHNO=$(shell uname | tr "[:upper:]" "[:lower:]")
 ifeq "$(OS)" "darwin"
