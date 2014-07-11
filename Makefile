@@ -55,7 +55,10 @@ cleanmcu:
 	@echo ""
 endif	
 
-getfromgit: clean
+remotebuild:
+	ssh $(REMOTEUSERNAME)@$(REMOTEHOSTNAME) ". .bash_aliases ; cd $(REMOTEDEVDIR) ; make TECHNO=openwrt buildfromgit"
+
+getfromgit:
 	git pull
 
 buildfromgit: getfromgit all

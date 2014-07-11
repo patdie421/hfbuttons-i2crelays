@@ -47,6 +47,11 @@ YUNUSERNAME=root
 YUNINSTALLDIR=.
 endif
 
+# remote build
+REMOTEUSERNAME=patrice
+REMOTEHOSTNAME=192.168.0.42
+REMOTEDEVDIR=/home/patrice/Developpement/mea-relaysbox
+
 .DEFAULT_GOAL = all
 
 printenv:
