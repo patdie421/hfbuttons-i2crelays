@@ -1,12 +1,6 @@
 SHELL = /bin/bash
 
-#TECHNO=openwrt
-
 -include env.mk
-
-# voir :
-# http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
-# pour la mise en place des cles ssh
 
 all:
 	cd $(XPLLIBDIR) ; make TECHNO=$(TECHNO)
@@ -19,6 +13,9 @@ ifneq "$(BUILDMCU)" "no"
 endif
 
 ifeq "$(TECHNO)" "openwrt"
+# voir :
+# http://wiki.openwrt.org/doku.php?id=oldwiki:dropbearpublickeyauthenticationhowto
+# pour la mise en place des cles ssh, 
 installserver: all
 	scp $(TECHNO)/$(EXECUTABLE) $(YUNUSERNAME)@$(YUNHOSTNAME):$(YUNINSTALLDIR)
 
