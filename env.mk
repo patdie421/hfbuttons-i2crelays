@@ -1,6 +1,8 @@
 # pour quelle cible
 -include techno.mk
 
+BUILDMCU=yes
+
 ifndef TECHNO
 TECHNO=$(shell uname | tr "[:upper:]" "[:lower:]")
 ifeq "$(OS)" "darwin"
@@ -8,7 +10,7 @@ TECHNO=macosx
 endif
 endif
 
-# choix du compilateur 
+# choix du compilateur
 ifeq "$(TECHNO)" "openwrt"
 ifndef STAGING_DIR
 $(error "STAGING_DIR not set, can't make openwrt binaries")
@@ -18,8 +20,6 @@ else
 CC=gcc
 endif
 
-COMMON=common
-
 # xpllib en fonction de la cible
 XPLLIB=$(TECHNO)_xPL.a
 ifeq "$(TECHNO)" "macosx"
@@ -28,7 +28,9 @@ else
 XPLLIBDIR="libraries/xPLLib"
 endif
 
-# identificationnoms des binaires
+COMMON=common
+
+# noms des repertoires et des binaires
 EXECUTABLE=mea-relaysbox-$(TECHNO)
 ARDUINOSRCDIR=Arduino
 ARDUINOSKETCHNAME=HFavecComio2
@@ -38,8 +40,6 @@ RELAYSCONTROLERSKETCHDIR=$(ARDUINOSRCDIR)/relayscontroler
 HFBUTTONSSKETCHNAME=hfbuttons
 HFBUTTONSSKETCHDIR=$(ARDUINOSRCDIR)/hfbuttons
 
-BUILDMCU=yes
-
 # déploiement
 ifeq "$(TECHNO)" "openwrt"
 YUNHOSTNAME=192.168.0.253
@@ -48,8 +48,8 @@ YUNINSTALLDIR=.
 endif
 
 # remote build
-REMOTEUSERNAME=patrice
 REMOTEHOSTNAME=192.168.0.42
+REMOTEUSERNAME=patrice
 REMOTEDEVDIR=/home/patrice/Developpement/mea-relaysbox
 
 .DEFAULT_GOAL = all
