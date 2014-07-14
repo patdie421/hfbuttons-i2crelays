@@ -1,10 +1,11 @@
 #include <stdlib.h>
-#include <util/delay.h> // Adds delay_ms and delay_us functions
 #include <avr/wdt.h>
 #include <avr/io.h>
 #include <avr/eeprom.h>
-#include <avr/sleep.h>
+#include  <avr/sleep.h>
 #include <avr/interrupt.h>
+#define __DELAY_BACKWARD_COMPATIBLE__ 
+#include <util/delay.h> // Adds delay_ms and delay_us functions
 #include <VirtualWire.h>
 #include <BlinkLeds.h>
 #include <usitwislave.h>
