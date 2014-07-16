@@ -4,7 +4,7 @@
 #include "SerialLine.h"
 #include "comio2.h"
 
-#define DEBUG 1
+//#define DEBUG 1
 #define NB_INTERFACES 62
 #define NB_BOUTONS_INTERFACE 3
 #define EEPROM_ASSOCS_OFFSET 10
