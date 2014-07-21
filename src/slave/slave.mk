@@ -6,9 +6,9 @@
 #   Definir 4 variables (environnement Linux ou passage au Makefile)
 #   ARDUINODIR : répertoire où est installé le logiciel Arduino 1.5.x
 #   HARDWARE : type de hardware (arduino par defaut, tiny pour attinyxx)
-#   MCUFAMILY : nom de la famille du microcontroleur (avr par defaut ou sam (pour due))
+#   MCUFAMILY : nom de la famille du microcontroleur (avr par defaut ou sam (pour due, non testé))
 #   BOARD : nom de la carte microcontroleur à programmer (voir dans boards.txt)
-#   lire la doc d'origine pour les autres paramètres possibles
+#   lire la doc d'origine ci-dessous pour les autres paramètres possibles
 #
 # make -f arduino.mk ARDUINODIR=/opt/arduino15 BOARD=uno
 # make -f arduino.mk ARDUINODIR=/opt/arduino15 MCUFAMILY=avr HARDWARE=arduino BOARD=uno
@@ -206,7 +206,7 @@ AVRTOOLSPATH ?= $(subst :, , $(PATH)) $(ARDUINODIR)/hardware/tools \
 	$(ARDUINODIR)/hardware/tools/$(MCUFAMILY)/bin
 
 # default path to find libraries
-LIBRARYPATH ?= libraries libs $(SKETCHBOOKDIR)/libraries $(ARDUINODIR)/hardware/$(HARDWARE)/$(MCUFAMILY)/libraries
+LIBRARYPATH ?= ../libraries/arduino libraries libs $(SKETCHBOOKDIR)/libraries $(ARDUINODIR)/hardware/$(HARDWARE)/$(MCUFAMILY)/libraries
 
 # default serial device to a poor guess (something that might be an arduino)
 SERIALDEVGUESS := 0
