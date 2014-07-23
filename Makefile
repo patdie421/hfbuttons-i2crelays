@@ -98,7 +98,7 @@ libs:
 
 libsothers:
 	@if [ -e $(SRCDIR)/$(LIBSDIR)/others/Makefile ]; then \
-	   $(MAKE) -C $(SRCDIR)/$(LIBSDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) CC=$(CC); \
+	   $(MAKE) -C $(SRCDIR)/$(LIBSDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) _CC=$(CC); \
 	fi
 
 master:
@@ -113,7 +113,7 @@ endif
 
 others:
 	@if [ -e $(SRCDIR)/others/Makefile ]; then \
-	   $(MAKE) -C $(SRCDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) CC=$(CC); \
+	   $(MAKE) -C $(SRCDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) _CC=$(CC); \
 	fi
 
 ifeq "$(YUNDEPLOY)" "yes"
@@ -131,6 +131,11 @@ endif
 
 clean: cleanmaster cleanslave cleanlibs
 
+cleanothers:
+	@if [ -e $(SRCDIR)/others/Makefile ]; then \
+	   $(MAKE) -C $(SRCDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) clean ; \
+	fi
+
 cleanmaster:
 	rm -f $(YUNINSTALLFLAG)
 	$(MAKE) -f master.mk -C $(SRCDIR)/$(MASTERDIR) BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) BINNAME=$(BINNAME) clean
@@ -147,6 +152,11 @@ endif
 
 cleanlibs:
 	$(MAKE) -C $(SRCDIR)/$(LIBSDIR) -f libraries.mk BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) clean
+
+cleanlibsothers:
+	@if [ -e $(SRCDIR)/$(LIBSDIR)/others/Makefile ]; then \
+	   $(MAKE) -C $(SRCDIR)/$(LIBSDIR)/others BASEDIR=$(BASEDIR) TECHNO=$(TECHNO) clean ; \
+	fi
 
 ifneq "$(BUILDMCU)" "no"
 installslave: slave

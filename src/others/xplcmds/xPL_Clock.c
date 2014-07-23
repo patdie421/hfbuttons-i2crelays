@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <signal.h>
-#include "../xPL.h"
+#include "xPL.h"
 
 #define CLOCK_VERSION "1.0"
 

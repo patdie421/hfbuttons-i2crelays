@@ -13,7 +13,12 @@ OBJECTS=$(addprefix $(TECHNO).objects/, $(SOURCES:.c=.o))
 LIBDIR=$(BASEDIR)/$(TECHNO)/lib
 XPLLIB=$(LIBDIR)/xPLLib.a
 
+ifneq "$(TECHNO)" "macosx"
 all:	.depdir $(TECHNO).objects xPLLib
+else
+all:
+	@echo "this xPLLib is not Mac OS X compatible"
+endif
 
 $(TECHNO).objects:
 	@mkdir -p $(TECHNO).objects

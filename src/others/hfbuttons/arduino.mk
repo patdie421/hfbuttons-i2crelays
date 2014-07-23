@@ -282,8 +282,10 @@ endif
 
 # software
 findsoftware = $(firstword $(wildcard $(addsuffix /$(1), $(AVRTOOLSPATH))))
-CC := $(call findsoftware,avr-gcc)
-CXX := $(call findsoftware,avr-g++)
+#CC := $(call findsoftware,avr-gcc)
+CC = $(call findsoftware,avr-gcc)
+#CXX := $(call findsoftware,avr-g++)
+CXX = $(call findsoftware,avr-g++)
 LD := $(call findsoftware,avr-ld)
 AR := $(call findsoftware,avr-ar)
 OBJCOPY := $(call findsoftware,avr-objcopy)
