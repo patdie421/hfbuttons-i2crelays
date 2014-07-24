@@ -2,25 +2,33 @@
 # Makefile for xPLLib
 #
 
+
 ifndef BASEDIR
+$(error - BASEDIR is unset)
 endif
 ifndef TECHNO
+$(error - TECHNO is unset)
+endif
+ifndef _CC
+$(error - _CC is unset)
 endif
 
 CC=$(_CC)
 
-#
-# For LINUX, use the following
-
 INCLUDES=-I $(BASEDIR)/src/libraries/unix/xPLLib
+CCOPTS = -O2 -pedantic -Wall $(INCLUDES)
 
 ifeq "$(TECHNO)" "linux"
 CCOPTS = -O2 -DLINUX -pedantic -Wall $(INCLUDES)
-LDOPTS	= -O2
-endif
+else
 ifeq "$(TECHNO)" "openwrt"
 CCOPTS = -O2 -DLINUX -pedantic -Wall $(INCLUDES)
-LDOPTS	= -O2
+else
+ifeq "$(TECHNO)" "macosx"
+INCLUDES=-I $(BASEDIR)/src/libraries/others/macosx/xPLLib
+CCOPTS = -O2 -pedantic -Wall $(INCLUDES)
+endif
+endif
 endif
 
 LIST = xPL_Hub xPL_Logger xPL_Clock xPL_ConfigClock xPLSend xPL_Hub_static
