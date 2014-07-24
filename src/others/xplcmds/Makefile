@@ -1,8 +1,3 @@
-#
-# Makefile for xPLLib
-#
-
-
 ifndef BASEDIR
 $(error - BASEDIR is unset)
 endif
@@ -48,10 +43,8 @@ $(TECHNO).objects:
 $(BINDIR):
 	@mkdir -p $@
 
-
 $(TECHNO).objects/%.o: %.c
 	$(CC) $(CCOPTS) -c $< -o $@
-
 
 $(BINDIR)/xPL_Hub: $(TECHNO).objects/xPL_Hub.o
 	echo $(CCOPTS)
