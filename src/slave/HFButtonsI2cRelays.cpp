@@ -5,7 +5,7 @@
 #include "SerialLine.h"
 #include "comio2.h"
 
-// Quelques donc à regarder :
+// Quelques doc à regarder :
 
 // http://playground.arduino.cc/Hardware/Yun (commande reset-mcu par exemple)
 
